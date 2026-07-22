@@ -1055,7 +1055,12 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   var CV = {
     name:'Emmanuel De Freitas',
     role:'Senior Software Engineer  ·  Frontend & AI Product Engineering',
-    contact:'emmanuel@exegia.co  ·  Remote / Los Angeles  ·  linkedin.com/in/software-engineer-manuel-defreitas  ·  x.com/mannydefreitas7',
+    contact:[
+      {t:'emmanuel@exegia.co', u:'mailto:emmanuel@exegia.co'},
+      {t:'Remote / Los Angeles'},
+      {t:'linkedin.com/in/software-engineer-manuel-defreitas', u:'https://www.linkedin.com/in/software-engineer-manuel-defreitas/'},
+      {t:'x.com/mannydefreitas7', u:'https://x.com/mannydefreitas7'}
+    ],
     summary:'Senior engineer with **10+ years** across React, React Native, and native iOS, now focused on **AI-driven product experiences**. I turn ambiguous problems into shipped, accessible interfaces — owning the work from design system to deployment, and mentoring the teams that keep it alive.',
     focus:'Frontend architecture · AI / LLM integration · React & React Native · Design systems · Accessibility (a11y) · Cloud & CI/CD',
     highlights:[
@@ -1079,7 +1084,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
           'Used **Cursor AI** to plan feature implementation and document the cost/performance strategy.'
         ]}
       ]},
-      { co:'PwC', loc:'', date:'Feb 2025 — Apr 2025', roles:[
+      { co:'PwC', loc:'Remote', date:'Feb 2025 — Apr 2025', roles:[
         { title:'Full Stack Developer', bullets:[
           'Joined an **MVP** initiative to automate the auditing process and requirement validation with **AI** assistance.',
           'Contributed to a **microfrontend React** app — implementing feature specs and growing the internal **UX design system** components.',
@@ -1087,21 +1092,21 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
           'Ran code reviews on **Azure DevOps** and improved unit-test coverage and **CI** automation.'
         ]}
       ]},
-      { co:'CurbsideSOS', loc:'', date:'Nov 2024 — Feb 2025', roles:[
+      { co:'CurbsideSOS', loc:'Remote', date:'Nov 2024 — Feb 2025', roles:[
         { title:'Senior Software Engineer', bullets:[
           'Led a **React Native** rewrite that lifted the App Store rating from **3.8 to 4.7** and crash-free sessions to **99.5%**.',
           'Cut cold-start time **~45%** through bundle splitting and native-module optimization.',
           'Built a live dispatch dashboard in **React + D3.js** visualizing 1k+ concurrent roadside requests.'
         ]}
       ]},
-      { co:'OpSource', loc:'', date:'Feb 2022 — 2024', roles:[
+      { co:'OpSource', loc:'Remote', date:'Feb 2022 — 2024', roles:[
         { title:'Senior Software Engineer', bullets:[
           'Delivered a B2B SaaS platform on **AWS** (Node · PostgreSQL) that scaled to **200k+** monthly API requests.',
           'Introduced GitLab CI/CD, dropping deploy time from **30 min to 4 min** and raising test coverage to **85%**.',
           'Mentored 4 engineers and established the team’s TDD and design-system practices.'
         ]}
       ]},
-      { co:'Watchtower WHQ', loc:'', date:'2018 — 2022', roles:[
+      { co:'Watchtower WHQ', loc:'New York, NY', date:'2018 — 2022', roles:[
         { title:'Product Owner', date:'2020 — 2022', bullets:[
           'Ran **Scrum / Agile** management for the team.',
           'Owned **UX lead & strategy** across the product.',
@@ -1113,7 +1118,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
           'Bridged and consumed text-processing APIs from the Foundation Services team using **Python**.'
         ]}
       ]},
-      { co:'DocSites', loc:'', date:'2015 — 2017', roles:[
+      { co:'DocSites', loc:'Sherman Oaks, CA', date:'2015 — 2017', roles:[
         { title:'Principal Software Developer', bullets:[
           'Delivered client web platforms end-to-end — architecture, build, and launch — as lead developer.',
           'Owned front-end delivery across concurrent client projects, standardizing reusable UI components.',
@@ -1129,15 +1134,15 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
       { h:'Practices', v:'System design · Design systems · TDD · Agile / Scrum · Web accessibility · Unit & E2E testing · UX lead & research · Performance tuning · Cross-functional leadership' }
     ],
     education:[
-      { d:'Associate Degree, Computer Science', s:'Brevet de Technicien Supérieur · Development — Université Paris Nanterre, France · 2010' },
-      { d:'Baccalauréat Scientifique', s:'Lycée Georges Braque · Argenteuil, France · 2006' }
+      { d:'Associate Degree, Computer Science', s:'Brevet de Technicien Supérieur · Development — Université Paris Nanterre, France · 2010', slang:'fr-FR' },
+      { d:'Baccalauréat Scientifique', dlang:'fr-FR', s:'Lycée Georges Braque · Argenteuil, France · 2006', slang:'fr-FR' }
     ],
     certifications:[
-      'Certified ScrumMaster (CSM)',
-      'Become a Full-Stack Web Developer — LinkedIn Learning',
-      'React: Using TypeScript — LinkedIn Learning',
-      'Node.js Essential Training — LinkedIn Learning',
-      'NoSQL Essential Training — LinkedIn Learning'
+      {t:'Certified ScrumMaster (CSM)'},
+      {t:'Become a Full-Stack Web Developer — LinkedIn Learning', u:'https://www.linkedin.com/learning/certificates/cb428cc6dc16847067d0765060e5d0b3e4d03d30495deae6eac5179505091e6c'},
+      {t:'React: Using TypeScript — LinkedIn Learning', u:'https://www.linkedin.com/learning/certificates/d741177dbbad53aa0a3059d679b199e03f5f8605a634b460c01232c600a2f1f7'},
+      {t:'Node.js Essential Training — LinkedIn Learning', u:'https://www.linkedin.com/learning/certificates/3176cf9dfe48965b056b670cd4f5e2df71fdf7804d99e4debba8a75b9a9b523d'},
+      {t:'NoSQL Essential Training — LinkedIn Learning', u:'https://www.linkedin.com/learning/certificates/6364fd8392ad180542931619d4a3711cf566bd862348e8fe1533f3c6f4ef9844'}
     ]
   };
 
@@ -1156,7 +1161,9 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     if(o.caps) x+='<w:caps/>';
     x+='<w:color w:val="'+(o.color||INK)+'"/>';
     if(o.ls) x+='<w:spacing w:val="'+o.ls+'"/>';
-    x+='<w:sz w:val="'+(o.sz||21)+'"/><w:szCs w:val="'+(o.sz||21)+'"/></w:rPr>';
+    x+='<w:sz w:val="'+(o.sz||21)+'"/><w:szCs w:val="'+(o.sz||21)+'"/>';
+    if(o.u) x+='<w:u w:val="single"/>';
+    x+='<w:lang w:val="'+(o.lang||'en-US')+'"/></w:rPr>';
     return x;
   }
   function run(text,o){
@@ -1164,6 +1171,13 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     return '<w:r>'+rPr(o)+'<w:t xml:space="preserve">'+esc(text)+'</w:t></w:r>';
   }
   function tab(o){ return '<w:r>'+rPr(o||{})+'<w:tab/></w:r>'; }
+  // external hyperlinks: each registers a relationship, resolved when the package is written
+  var links=[];
+  function link(text,url,o){
+    o=o||{}; o.u=true; o.color=o.color||ACCENT;
+    links.push(url);
+    return '<w:hyperlink r:id="rId'+(links.length+1)+'">'+run(text,o)+'</w:hyperlink>';
+  }
   // "plain **bold** plain" → runs
   function rich(text,o){
     o=o||{};
@@ -1195,11 +1209,11 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   }
   function sectionHead(label){
     return para(run(label,{b:true,caps:true,sz:19,color:ACCENT,ls:30}),
-                {before:300,after:80,rule:true,keepNext:true});
+                {before:240,after:70,rule:true,keepNext:true});
   }
   function bullet(text){
     return para(run('•',{color:ACCENT})+tab()+rich(text,{color:MUTED}),
-                {ind:300,hanging:300,tabLeft:300,after:50});
+                {ind:300,hanging:300,tabLeft:300,after:32});
   }
 
   function documentXml(){
@@ -1207,7 +1221,13 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     // header block
     b+=para(run(CV.name,{b:true,sz:44,ls:-8}),{after:30});
     b+=para(run(CV.role,{sz:21,color:ACCENT}),{after:40});
-    b+=para(run(CV.contact,{sz:18,color:FAINT}),{after:60,rule:true});
+    var cx='';
+    for(i=0;i<CV.contact.length;i++){
+      if(i) cx+=run('  ·  ',{sz:18,color:FAINT});
+      cx+= CV.contact[i].u ? link(CV.contact[i].t,CV.contact[i].u,{sz:18})
+                           : run(CV.contact[i].t,{sz:18,color:FAINT});
+    }
+    b+=para(cx,{after:60,rule:true});
 
     // profile
     b+=sectionHead('Profile');
@@ -1219,9 +1239,10 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     b+=sectionHead('Experience');
     for(i=0;i<CV.experience.length;i++){
       var e=CV.experience[i];
-      b+=para(run(e.co,{b:true,sz:23})+tab()+run(e.date,{sz:19,color:FAINT}),
-              {tabRight:RIGHT_TAB,before:140,after:e.loc?20:40,keepNext:true});
-      if(e.loc) b+=para(run(e.loc,{sz:18,color:FAINT,i:true}),{after:40,keepNext:true});
+      b+=para(run(e.co,{b:true,sz:23})+
+              (e.loc?run('  ·  '+e.loc,{sz:19,color:FAINT}):'')+
+              tab()+run(e.date,{sz:19,color:FAINT}),
+              {tabRight:RIGHT_TAB,before:110,after:36,keepNext:true});
       for(j=0;j<e.roles.length;j++){
         var rl=e.roles[j];
         b+=para(run(rl.title,{sz:20,color:INK,i:true})+(rl.date?tab()+run(rl.date,{sz:18,color:FAINT}):''),
@@ -1233,22 +1254,28 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     // skills
     b+=sectionHead('Stack');
     for(i=0;i<CV.skills.length;i++){
-      b+=para(run(CV.skills[i].h+':  ',{b:true,sz:20})+run(CV.skills[i].v,{sz:20,color:MUTED}),{after:70});
+      b+=para(run(CV.skills[i].h+':  ',{b:true,sz:20})+run(CV.skills[i].v,{sz:20,color:MUTED}),{after:56});
     }
 
     // education
     b+=sectionHead('Education');
     for(i=0;i<CV.education.length;i++){
-      b+=para(run(CV.education[i].d,{b:true,sz:20}),{after:20,keepNext:true});
-      b+=para(run(CV.education[i].s,{sz:19,color:FAINT}),{after:80});
+      b+=para(run(CV.education[i].d,{b:true,sz:20,lang:CV.education[i].dlang}),{after:20,keepNext:true});
+      b+=para(run(CV.education[i].s,{sz:19,color:FAINT,lang:CV.education[i].slang}),{after:70});
     }
 
     // certifications
     b+=sectionHead('Certifications');
-    for(i=0;i<CV.certifications.length;i++) b+=bullet(CV.certifications[i]);
+    for(i=0;i<CV.certifications.length;i++){
+      var ct=CV.certifications[i];
+      b+=para(run('•',{color:ACCENT})+tab()+
+              (ct.u ? link(ct.t,ct.u,{sz:21}) : run(ct.t,{color:MUTED})),
+              {ind:300,hanging:300,tabLeft:300,after:32});
+    }
 
     return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
-      '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+      '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '+
+      'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
       '<w:body>'+b+
       '<w:sectPr><w:pgSz w:w="12240" w:h="15840"/>'+
       '<w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080" w:header="720" w:footer="720" w:gutter="0"/>'+
@@ -1272,16 +1299,23 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>'+
     '</Relationships>';
 
-  var DOC_RELS='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
-    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
-    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
-    '</Relationships>';
+  function docRelsXml(){
+    var x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>';
+    for(var i=0;i<links.length;i++){
+      x+='<Relationship Id="rId'+(i+2)+'" '+
+         'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" '+
+         'Target="'+esc(links[i])+'" TargetMode="External"/>';
+    }
+    return x+'</Relationships>';
+  }
 
   var STYLES='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
     '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
     '<w:docDefaults><w:rPrDefault><w:rPr>'+
     '<w:rFonts w:ascii="'+FONT+'" w:hAnsi="'+FONT+'" w:eastAsia="'+FONT+'" w:cs="'+FONT+'"/>'+
-    '<w:color w:val="'+INK+'"/><w:sz w:val="21"/><w:szCs w:val="21"/>'+
+    '<w:color w:val="'+INK+'"/><w:sz w:val="21"/><w:szCs w:val="21"/><w:lang w:val="en-US"/>'+
     '</w:rPr></w:rPrDefault>'+
     '<w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault>'+
     '</w:docDefaults>'+
@@ -1361,13 +1395,15 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   }
 
   function buildDocx(){
+    links=[];                       // reset so repeat downloads stay identical
+    var docXml=documentXml();       // must run before docRelsXml()
     return zipStore([
       {name:'[Content_Types].xml', data:utf8(CONTENT_TYPES)},
       {name:'_rels/.rels',         data:utf8(ROOT_RELS)},
       {name:'docProps/core.xml',   data:utf8(CORE)},
       {name:'docProps/app.xml',    data:utf8(APP)},
-      {name:'word/document.xml',   data:utf8(documentXml())},
-      {name:'word/_rels/document.xml.rels', data:utf8(DOC_RELS)},
+      {name:'word/document.xml',   data:utf8(docXml)},
+      {name:'word/_rels/document.xml.rels', data:utf8(docRelsXml())},
       {name:'word/styles.xml',     data:utf8(STYLES)}
     ]);
   }
