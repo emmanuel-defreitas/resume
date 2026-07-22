@@ -1,0 +1,7 @@
+.vercel
+.env*
+node_modules
+*.html.bak
+_docx_preview.html
+.claude/
+.remember/

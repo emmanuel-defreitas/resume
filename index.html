@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Emmanuel De Freitas — Senior Software Engineer</title>
+<meta name="description" content="Emmanuel De Freitas — Senior Software Engineer building AI-driven web and mobile products with React, TypeScript, and Node." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+@font-face{font-family:'Cal Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/cal-sans@latest/latin-400-normal.woff2') format('woff2');}
+/* ============================================================
+   TOKENS — palette biased slightly cool/teal, never pure grey
+   ============================================================ */
+:root{
+  --font-display:"Cal Sans", "Bricolage Grotesque", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-body:"IBM Plex Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ease:cubic-bezier(0.32,0.72,0,1);
+  --maxw:1080px;
+
+  /* dark is the hero experience */
+  --bg:#07080B;
+  --bg-2:#0A0C11;
+  --surface:#0E1119;
+  --surface-2:#12151F;
+  --hairline:rgba(255,255,255,0.09);
+  --hairline-strong:rgba(255,255,255,0.16);
+  --ink:#ECEEF3;
+  --ink-muted:#98A2B4;
+  --ink-faint:#5E6779;
+  --accent:#25E3C3;
+  --accent-deep:#12B9A0;
+  --accent-ink:#052421;
+  --glow-a:rgba(37,227,195,0.20);
+  --glow-b:rgba(80,120,255,0.16);
+  --grid-line:rgba(255,255,255,0.028);
+}
+:root[data-theme="light"]{
+  --bg:#FAFBFC;
+  --bg-2:#F2F4F7;
+  --surface:#FFFFFF;
+  --surface-2:#F6F8FA;
+  --hairline:rgba(8,20,30,0.09);
+  --hairline-strong:rgba(8,20,30,0.16);
+  --ink:#0C1116;
+  --ink-muted:#4C5665;
+  --ink-faint:#8A94A3;
+  --accent:#0C8F79;
+  --accent-deep:#0A7A67;
+  --accent-ink:#F2FFFB;
+  --glow-a:rgba(12,143,121,0.12);
+  --glow-b:rgba(70,110,240,0.10);
+  --grid-line:rgba(8,20,30,0.035);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#FAFBFC; --bg-2:#F2F4F7; --surface:#FFFFFF; --surface-2:#F6F8FA;
+    --hairline:rgba(8,20,30,0.09); --hairline-strong:rgba(8,20,30,0.16);
+    --ink:#0C1116; --ink-muted:#4C5665; --ink-faint:#8A94A3;
+    --accent:#0C8F79; --accent-deep:#0A7A67; --accent-ink:#F2FFFB;
+    --glow-a:rgba(12,143,121,0.12); --glow-b:rgba(70,110,240,0.10);
+    --grid-line:rgba(8,20,30,0.035);
+  }
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.6;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+  transition:background .6s var(--ease), color .6s var(--ease);
+}
+a{color:inherit;text-decoration:none}
+li{list-style:none}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* ============================================================
+   AMBIENT BACKGROUND — fixed, GPU-safe, pointer-events none
+   ============================================================ */
+.atmos{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.atmos::before{ /* dotted grid */
+  content:"";position:absolute;inset:-10%;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 25%, transparent 78%);
+}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.9;will-change:transform}
+.orb-a{width:52vw;height:52vw;top:-18vw;left:-8vw;background:radial-gradient(circle,var(--glow-a),transparent 68%);animation:drift-a 26s var(--ease) infinite alternate}
+.orb-b{width:44vw;height:44vw;top:-6vw;right:-10vw;background:radial-gradient(circle,var(--glow-b),transparent 68%);animation:drift-b 32s var(--ease) infinite alternate}
+@keyframes drift-a{to{transform:translate3d(6vw,4vw,0) scale(1.12)}}
+@keyframes drift-b{to{transform:translate3d(-5vw,6vw,0) scale(1.08)}}
+.vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 120% 70% at 50% -10%, transparent 40%, var(--bg) 96%)}
+
+/* ============================================================
+   FLUID ISLAND NAV
+   ============================================================ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:18px 16px}
+.nav-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 8px 7px 18px;
+  background:color-mix(in srgb, var(--surface) 72%, transparent);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  backdrop-filter:blur(18px) saturate(150%);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:0 8px 40px -18px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
+  max-width:calc(100vw - 32px);
+}
+.nav-brand{font-family:var(--font-mono);font-size:12.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;padding-right:6px}
+.nav-brand b{color:var(--accent)}
+.nav-links{display:flex;gap:2px;margin:0 4px}
+.nav-links a{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);
+  padding:8px 12px;border-radius:999px;transition:color .4s var(--ease),background .4s var(--ease);
+}
+.nav-links a:hover{color:var(--ink);background:var(--hairline)}
+.nav-tools{display:flex;gap:6px;align-items:center}
+.icon-btn{
+  width:36px;height:36px;display:grid;place-items:center;
+  background:var(--hairline);border:1px solid transparent;border-radius:999px;cursor:pointer;color:var(--ink);
+  transition:transform .4s var(--ease),background .4s var(--ease);
+}
+.icon-btn:hover{background:var(--hairline-strong)}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn svg{width:16px;height:16px}
+.theme-sun{display:none}
+:root[data-theme="light"] .theme-sun{display:block}
+:root[data-theme="light"] .theme-moon{display:none}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]) .theme-sun{display:block}
+  :root:not([data-theme="dark"]) .theme-moon{display:none}
+}
+@media (max-width:640px){ .nav-links{display:none} }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+main{position:relative;z-index:1}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-mono);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.24em;color:var(--accent);
+  padding:6px 13px;border:1px solid var(--hairline-strong);border-radius:999px;
+  background:color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.sec-head{display:flex;flex-direction:column;gap:18px;margin-bottom:52px}
+.sec-head h2{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4.6vw,44px);line-height:1.04;letter-spacing:-.02em;text-wrap:balance}
+.sec-head p{color:var(--ink-muted);max-width:56ch}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;padding-bottom:80px}
+.hero-eyebrow{margin-bottom:28px}
+.hero h1{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(44px,10vw,116px);line-height:.92;letter-spacing:-.035em;
+  text-wrap:balance;margin-bottom:8px;
+}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .accent{color:var(--accent)}
+.hero-role{
+  font-family:var(--font-mono);font-size:clamp(13px,1.6vw,16px);font-weight:500;
+  color:var(--ink-muted);letter-spacing:.02em;margin-top:22px;
+  display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+}
+.hero-role .dot{width:5px;height:5px;border-radius:50%;background:var(--ink-faint)}
+.hero-role b{color:var(--ink);font-weight:500}
+.hero-summary{margin-top:30px;max-width:60ch;font-size:clamp(16px,2vw,19px);color:var(--ink);opacity:.92}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px;align-items:center}
+
+/* Button-in-button CTA */
+.btn{
+  display:inline-flex;align-items:center;gap:14px;
+  padding:11px 12px 11px 22px;border-radius:999px;
+  font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.01em;cursor:pointer;
+  border:1px solid transparent;transition:transform .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease);
+}
+.btn .cap{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;transition:transform .4s var(--ease),background .4s var(--ease)}
+.btn .cap svg{width:15px;height:15px}
+.btn:active{transform:scale(.975)}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary .cap{background:rgba(0,0,0,.16)}
+.btn-primary:hover .cap{transform:translate(2px,-1px)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--hairline-strong)}
+.btn-ghost .cap{background:var(--hairline)}
+.btn-ghost:hover{border-color:var(--accent);background:var(--surface-2)}
+.btn-ghost:hover .cap{transform:translate(2px,-1px);background:color-mix(in srgb,var(--accent) 20%,transparent)}
+
+/* social row */
+.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.social{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);
+  padding:9px 15px;border:1px solid var(--hairline);border-radius:999px;
+  background:color-mix(in srgb,var(--surface) 50%,transparent);
+  transition:color .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease),background .35s var(--ease);
+}
+.social svg{width:15px;height:15px;opacity:.85}
+.social:hover{color:var(--ink);border-color:var(--accent);transform:translateY(-2px);background:var(--surface)}
+.social:hover svg{opacity:1;color:var(--accent)}
+
+/* ============================================================
+   STAT STRIP
+   ============================================================ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hairline);
+  border:1px solid var(--hairline);border-radius:20px;overflow:hidden;margin-top:8px}
+.stat{background:var(--bg);padding:26px 24px;display:flex;flex-direction:column;gap:6px}
+.stat .n{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat .n span{color:var(--accent)}
+.stat .l{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-faint)}
+@media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ============================================================
+   DOUBLE-BEZEL SHELL
+   ============================================================ */
+.shell{background:var(--bg-2);border:1px solid var(--hairline);border-radius:26px;padding:7px}
+.core{background:var(--surface);border:1px solid var(--hairline);border-radius:20px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+.summary-core{padding:clamp(30px,5vw,54px)}
+.summary-core p{font-family:var(--font-display);font-weight:500;
+  font-size:clamp(20px,3vw,30px);line-height:1.4;letter-spacing:-.015em;text-wrap:balance}
+.summary-core p b{color:var(--accent);font-weight:600}
+.summary-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.tag{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-muted);
+  padding:6px 12px;border:1px solid var(--hairline);border-radius:8px;background:var(--surface-2)}
+
+/* ============================================================
+   EXPERIENCE — timeline rail
+   ============================================================ */
+.exp-list{display:flex;flex-direction:column;gap:16px}
+.exp{position:relative;display:grid;grid-template-columns:180px 1fr;gap:32px;
+  padding:30px;border:1px solid var(--hairline);border-radius:22px;
+  background:color-mix(in srgb,var(--surface) 40%,transparent);
+  transition:border-color .5s var(--ease),background .5s var(--ease),transform .5s var(--ease)}
+.exp:hover{border-color:var(--hairline-strong);background:var(--surface);transform:translateY(-3px)}
+.exp-meta{display:flex;flex-direction:column;gap:10px}
+.exp-logo{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;margin-bottom:6px;
+  background:var(--surface-2);border:1px solid var(--hairline);color:var(--ink);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.exp-logo svg{width:24px;height:24px}
+.exp-logo .lm{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.exp-date{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.02em}
+.exp-co{font-family:var(--font-mono);font-size:13px;color:var(--ink);font-weight:600}
+.exp-loc{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.exp-body h3{font-family:var(--font-display);font-weight:700;font-size:clamp(19px,2.4vw,24px);letter-spacing:-.015em;margin-bottom:16px}
+.exp-body ul{display:flex;flex-direction:column;gap:11px}
+.exp-body li{position:relative;padding-left:24px;color:var(--ink-muted);font-size:15px}
+.exp-body li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:2px;
+  background:var(--accent);transform:rotate(45deg);opacity:.9}
+.exp-body li b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.exp-role + .exp-role{margin-top:24px;padding-top:24px;border-top:1px solid var(--hairline)}
+.exp-role-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.exp-role-head h3{margin-bottom:0}
+.exp-role-date{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.02em}
+.exp-earlier{font-family:var(--font-mono);font-size:13px;color:var(--ink-muted);
+  padding:22px 30px;border:1px dashed var(--hairline-strong);border-radius:18px;line-height:1.7}
+.exp-earlier b{color:var(--ink)}
+@media (max-width:720px){.exp{grid-template-columns:1fr;gap:18px;padding:24px}}
+
+/* ============================================================
+   SKILLS — bento
+   ============================================================ */
+.skills-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.skill-card{background:color-mix(in srgb,var(--surface) 45%,transparent);
+  border:1px solid var(--hairline);border-radius:20px;padding:26px;
+  transition:border-color .5s var(--ease),background .5s var(--ease),transform .5s var(--ease)}
+.skill-card:hover{border-color:var(--hairline-strong);background:var(--surface);transform:translateY(-3px)}
+.skill-card.wide{grid-column:span 3}
+.skill-card.mid{grid-column:span 2}
+.skill-card.small{grid-column:span 2}
+.skill-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.skill-head .ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.skill-head .ico svg{width:16px;height:16px}
+.skill-head h4{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);
+  padding:6px 11px;border:1px solid var(--hairline);border-radius:8px;background:var(--surface-2);
+  transition:color .3s var(--ease),border-color .3s var(--ease)}
+.skill-card:hover .chip{border-color:var(--hairline-strong)}
+@media (max-width:900px){.skills-grid{grid-template-columns:repeat(2,1fr)}
+  .skill-card.wide,.skill-card.mid,.skill-card.small{grid-column:span 1}}
+@media (max-width:560px){.skills-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   EDUCATION + CERTS
+   ============================================================ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.block{background:color-mix(in srgb,var(--surface) 45%,transparent);
+  border:1px solid var(--hairline);border-radius:22px;padding:clamp(26px,3.5vw,38px)}
+.block h3{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-faint);margin-bottom:24px}
+.edu-item{padding:16px 0;border-top:1px solid var(--hairline)}
+.edu-item:first-of-type{border-top:none;padding-top:0}
+.edu-item .d{font-family:var(--font-display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.edu-item .s{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);margin-top:5px}
+.cert-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-top:1px solid var(--hairline)}
+.cert-item:first-of-type{border-top:none;padding-top:0}
+.cert-item .yr{font-family:var(--font-mono);font-size:11px;color:var(--accent);white-space:nowrap;padding-top:2px;min-width:38px}
+.cert-item .t{font-size:14.5px;color:var(--ink)}
+.cert-item .t span{display:block;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-top:3px}
+.cert-item a.t:hover{color:var(--accent)}
+@media (max-width:720px){.two-col{grid-template-columns:1fr}}
+
+/* ============================================================
+   FOOTER / CTA
+   ============================================================ */
+.foot{padding-bottom:clamp(60px,9vw,110px)}
+.foot-core{padding:clamp(36px,6vw,68px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:26px}
+.foot-core h2{font-family:var(--font-display);font-weight:700;font-size:clamp(30px,5vw,52px);letter-spacing:-.025em;line-height:1;text-wrap:balance}
+.foot-core p{color:var(--ink-muted);max-width:48ch}
+.foot-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.colophon{margin-top:56px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;
+  font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint)}
+.colophon a:hover{color:var(--accent)}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(26px);filter:blur(6px);
+  transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:none}
+.reveal[data-d="1"]{transition-delay:.08s}
+.reveal[data-d="2"]{transition-delay:.16s}
+.reveal[data-d="3"]{transition-delay:.24s}
+.reveal[data-d="4"]{transition-delay:.32s}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;filter:none;transition:none}
+  .orb{display:none}
+}
+
+/* ============================================================
+   DOWNLOAD DIALOG — format picker (PDF / DOCX)
+   ============================================================ */
+.dl-overlay{
+  position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;
+  background:color-mix(in srgb, var(--bg) 62%, transparent);
+  backdrop-filter:blur(14px) saturate(130%);-webkit-backdrop-filter:blur(14px) saturate(130%);
+  opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+}
+.dl-overlay.open{opacity:1;pointer-events:auto}
+.dl-overlay[hidden]{display:none}   /* keep the closed dialog out of the a11y tree */
+.dl-panel{
+  width:min(560px,100%);position:relative;
+  background:color-mix(in srgb, var(--surface) 92%, transparent);
+  border:1px solid var(--hairline-strong);border-radius:24px;
+  padding:clamp(24px,4vw,34px);
+  box-shadow:0 40px 90px -40px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.05);
+  transform:translateY(14px) scale(.975);opacity:0;
+  transition:transform .45s var(--ease),opacity .45s var(--ease);
+}
+.dl-overlay.open .dl-panel{transform:none;opacity:1}
+.dl-head{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:22px;padding-right:44px}
+.dl-head h3{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,3.4vw,30px);letter-spacing:-.02em;line-height:1.08}
+.dl-head p{color:var(--ink-muted);font-size:14.5px;max-width:44ch}
+.dl-close{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;display:grid;place-items:center;
+  border-radius:999px;border:1px solid transparent;background:var(--hairline);color:var(--ink-muted);cursor:pointer;
+  transition:background .35s var(--ease),color .35s var(--ease),transform .35s var(--ease);
+}
+.dl-close:hover{background:var(--hairline-strong);color:var(--ink)}
+.dl-close:active{transform:scale(.92)}
+.dl-close svg{width:15px;height:15px}
+.dl-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.dl-options{grid-template-columns:1fr}}
+.dl-opt{
+  position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left;
+  padding:20px 18px;border-radius:18px;cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--hairline);color:var(--ink);
+  font-family:var(--font-body);
+  transition:transform .4s var(--ease),border-color .4s var(--ease),background .4s var(--ease);
+}
+.dl-opt:hover{transform:translateY(-3px);border-color:var(--accent);background:color-mix(in srgb, var(--accent) 7%, var(--surface-2))}
+.dl-opt:active{transform:translateY(-1px) scale(.99)}
+.dl-opt .dl-ico{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:color-mix(in srgb, var(--accent) 14%, transparent);color:var(--accent);
+  border:1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.dl-opt .dl-ico svg{width:19px;height:19px}
+.dl-opt .dl-kind{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em}
+.dl-opt .dl-desc{font-size:13px;color:var(--ink-muted);line-height:1.5}
+.dl-opt .dl-ext{
+  position:absolute;top:16px;right:16px;font-family:var(--font-mono);font-size:10.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+}
+.dl-note{margin-top:18px;font-family:var(--font-mono);font-size:11px;letter-spacing:.03em;color:var(--ink-faint);display:flex;gap:8px;align-items:center}
+.dl-note kbd{font-family:inherit;border:1px solid var(--hairline-strong);border-radius:5px;padding:1px 5px;color:var(--ink-muted)}
+@media (prefers-reduced-motion: reduce){
+  .dl-overlay,.dl-panel{transition:none}
+  .dl-opt:hover{transform:none}
+}
+
+/* ============================================================
+   PRINT — clean 1–2 page PDF
+   ============================================================ */
+@media print{
+  .dl-overlay{display:none !important}
+  @page{size:A4;margin:14mm}
+  :root{--ink:#0b0f14;--ink-muted:#333c46;--ink-faint:#5a6672;--accent:#0a7a67;
+    --surface:#fff;--surface-2:#fff;--bg:#fff;--bg-2:#fff;--hairline:#d7dde3;--hairline-strong:#c2cad2}
+  html,body{background:#fff !important;color:#0b0f14 !important;font-size:10.5pt}
+  .atmos,.vignette,.nav,.hero-actions,.socials .social:nth-child(n+5),.foot-actions,.icon-btn{display:none !important}
+  .reveal{opacity:1 !important;transform:none !important;filter:none !important}
+  section{padding:14px 0 !important;break-inside:avoid}
+  .hero{min-height:auto !important;padding:0 0 10px !important;display:block}
+  .hero h1{font-size:30pt !important;line-height:1 !important;color:#0b0f14 !important}
+  .hero h1 .accent{color:#0a7a67 !important}
+  .hero-summary{font-size:11pt !important;max-width:none}
+  .shell{border:none !important;padding:0 !important;background:none !important}
+  .core,.exp,.skill-card,.block,.summary-core,.stats{border:1px solid #d7dde3 !important;
+    background:#fff !important;box-shadow:none !important;break-inside:avoid}
+  .summary-core p{font-size:13pt !important}
+  .exp:hover,.skill-card:hover{transform:none !important}
+  .socials{margin-top:14px}
+  .social{border:none;padding:2px 0;color:#333c46}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-family:var(--font-mono);font-size:8pt;color:#7a8894;word-break:break-all}
+  .nav-links a::after,.social span::after{content:""}
+  .foot{display:none}
+  .exp-list{gap:8px}
+  .skills-grid{gap:8px}
+}
+
+/* ============================================================
+   ASCII PORTRAIT — always-visible layer (behind content, right)
+   ============================================================ */
+.ascii-portrait{position:fixed;top:0;right:0;height:100dvh;width:min(1100px,82vw);
+  z-index:0;pointer-events:none;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 30%, #000 100%);
+  mask-image:linear-gradient(to right, transparent 0%, #000 30%, #000 100%);}
+.ascii-portrait canvas{position:absolute;inset:0;width:100%;height:100%}
+@media (max-width:900px){.ascii-portrait{display:none}}
+@media print{.ascii-portrait{display:none !important}}
+</style>
+</head>
+<body>
+<div class="atmos" aria-hidden="true">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+</div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="ascii-portrait" aria-hidden="true"><canvas id="asciiCanvas"></canvas></div>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Primary">
+  <div class="nav-pill">
+    <span class="nav-brand">EDF<b>_</b></span>
+    <div class="nav-links">
+      <a href="#work">work</a>
+      <a href="#skills">stack</a>
+      <a href="#education">education</a>
+    </div>
+    <div class="nav-tools">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle color theme">
+        <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+        <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Download résumé (PDF or Word)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <header class="hero wrap">
+    <span class="eyebrow hero-eyebrow reveal">Available for senior roles · Remote / Los Angeles</span>
+    <h1 class="reveal" data-d="1">
+      <span class="line">Emmanuel</span>
+      <span class="line accent">De&nbsp;Freitas</span>
+    </h1>
+    <div class="hero-role reveal" data-d="2">
+      <b>Senior Software Engineer</b>
+      <span class="dot"></span>
+      <span>Frontend &amp; AI Product Engineering</span>
+    </div>
+    <p class="hero-summary reveal" data-d="3">
+      I build fast, accessible products at the seam of interface and intelligence —
+      React/TypeScript on the front, Node and cloud on the back, and LLM-driven
+      features woven through. A decade shipping web, mobile, and design systems for
+      teams from startups to the Big Four.
+    </p>
+    <div class="hero-actions reveal" data-d="3">
+      <a class="btn btn-primary" href="mailto:emmanuel@exegia.co">
+        Get in touch
+        <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <button class="btn btn-ghost" id="printBtn2" type="button">
+        Download résumé
+        <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg></span>
+      </button>
+    </div>
+    <div class="socials reveal" data-d="4">
+      <a class="social" href="https://www.linkedin.com/in/software-engineer-manuel-defreitas/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45C23.2 24 24 23.22 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+        LinkedIn
+      </a>
+      <a class="social" href="https://x.com/mannydefreitas7" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.4l-5.8-7.58-6.63 7.58H.48l8.6-9.83L0 1.15h7.59l5.24 6.93 6.07-6.93zm-1.3 19.5h2.04L6.49 3.24H4.3L17.6 20.65z"/></svg>
+        X / Twitter
+      </a>
+      <a class="social" href="https://profile.indeed.com/p/manueld-qmy39hx" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2.75"/><rect x="9.5" y="8.7" width="5" height="11.3" rx="2.5"/></svg>
+        Indeed
+      </a>
+      <a class="social" href="mailto:emmanuel@exegia.co">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        Email
+      </a>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <section aria-label="At a glance" style="padding-top:0">
+    <div class="wrap">
+      <div class="stats reveal">
+        <div class="stat"><div class="n"><span>10</span>+</div><div class="l">Years shipping</div></div>
+        <div class="stat"><div class="n"><span>4</span></div><div class="l">Platforms · web · Expo · desktop</div></div>
+        <div class="stat"><div class="n"><span>20</span>+</div><div class="l">Products delivered</div></div>
+        <div class="stat"><div class="n">TS<span>·</span>AI</div><div class="l">Core focus</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section id="about" class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">01 — Profile</span>
+      <h2>A generalist who ships, with a specialist's obsession for the interface.</h2>
+    </div>
+    <div class="shell reveal" data-d="1">
+      <div class="core summary-core">
+        <p>Senior engineer with <b>10+ years</b> across React, React Native, and native iOS, now focused on
+        <b>AI-driven product experiences</b>. I turn ambiguous problems into shipped, accessible interfaces —
+        owning the work from design system to deployment, and mentoring the teams that keep it alive.</p>
+        <div class="summary-tags">
+          <span class="tag">Frontend architecture</span>
+          <span class="tag">AI / LLM integration</span>
+          <span class="tag">React &amp; React Native</span>
+          <span class="tag">Design systems</span>
+          <span class="tag">Accessibility (a11y)</span>
+          <span class="tag">Cloud &amp; CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="work" class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">02 — Experience</span>
+      <h2>Where I've shipped.</h2>
+      <p>Selected roles from a decade of engineering across startups, healthcare, civic tech, and enterprise consulting.</p>
+    </div>
+    <div class="exp-list">
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 15.6C4.8 11 6 7.9 8 7.3c1.6-.5 3.2.6 4 2.2.8-1.6 2.4-2.7 4-2.2 2 .6 3.2 3.7 3 8.3z"/><rect x="5" y="15.4" width="14" height="2.7" rx="1.2"/><circle cx="4.1" cy="16.8" r="1.7"/><circle cx="19.9" cy="16.8" r="1.7"/></svg></span>
+          <span class="exp-date">Jun 2025 — Mar 2026</span>
+          <span class="exp-co">The Motley Fool</span>
+          <span class="exp-loc">Contract · Remote</span>
+        </div>
+        <div class="exp-body">
+          <h3>React Native Developer</h3>
+          <ul>
+            <li>Maintained and upgraded the official <b>React Native</b> (Expo) app for stock management at The Motley Fool.</li>
+            <li>Implemented feature improvements and resolved bugs to sharpen the in-app user experience.</li>
+            <li>Collaborated with cross-functional teams to keep app functionality and performance seamless.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.4" stroke="currentColor" stroke-width="4.2"/><path d="M17.6 15a2.8 2.8 0 1 1-2.1 4.7z" fill="currentColor"/></svg></span>
+          <span class="exp-date">Apr 2025 — Jun 2025</span>
+          <span class="exp-co">High Fidelity</span>
+          <span class="exp-loc">Sr. Front End Engineer</span>
+        </div>
+        <div class="exp-body">
+          <h3>Sr. Front End Engineer</h3>
+          <ul>
+            <li>Built and extended real-time audio/video features for the <b>Quad</b> app via the <b>Agora SDK</b> API, wired up with <b>Python</b>.</li>
+            <li>Engineered the frontend UI and canvas rendering with <b>Svelte</b> and <b>PixiJS</b> for smooth drawing of complex canvas objects.</li>
+            <li>Used <b>Cursor AI</b> to plan feature implementation and document the cost/performance strategy.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><span class="lm">pwc</span></span>
+          <span class="exp-date">Feb 2025 — Apr 2025</span>
+          <span class="exp-co">PwC</span>
+          <span class="exp-loc">Full Stack Developer</span>
+        </div>
+        <div class="exp-body">
+          <h3>Full Stack Developer</h3>
+          <ul>
+            <li>Joined an <b>MVP</b> initiative to automate the auditing process and requirement validation with <b>AI</b> assistance.</li>
+            <li>Contributed to a <b>microfrontend React</b> app — implementing feature specs and growing the internal <b>UX design system</b> components.</li>
+            <li>Supported the <b>BFF (Backend-for-Frontend)</b> layer in <b>.NET / C#</b>, developing in VS Code.</li>
+            <li>Ran code reviews on <b>Azure DevOps</b> and improved unit-test coverage and <b>CI</b> automation.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.15 4.1a1.2 1.2 0 0 1 1.7 0L15 10.1H9z"/><path d="M8.6 11.9h6.8l1.8 5.5H6.8z"/><rect x="5.2" y="17.4" width="13.6" height="3.1" rx="1.45"/></svg></span>
+          <span class="exp-date">Nov 2024 — Feb 2025</span>
+          <span class="exp-co">CurbsideSOS</span>
+          <span class="exp-loc">Senior Software Engineer</span>
+        </div>
+        <div class="exp-body">
+          <h3>Senior Software Engineer</h3>
+          <ul>
+            <li>Led a <b>React Native</b> rewrite that lifted the App Store rating from <b>3.8 to 4.7</b> and crash-free sessions to <b>99.5%</b>.</li>
+            <li>Cut cold-start time <b>~45%</b> through bundle splitting and native-module optimization.</li>
+            <li>Built a live dispatch dashboard in <b>React + D3.js</b> visualizing 1k+ concurrent roadside requests.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M19 8.5A8 8 0 1 0 20 12" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><path d="M12.6 2.5l3.4 1.9-3.1 1.9z" fill="currentColor"/></svg></span>
+          <span class="exp-date">Feb 2022 — 2024</span>
+          <span class="exp-co">OpSource</span>
+          <span class="exp-loc">Senior Software Engineer</span>
+        </div>
+        <div class="exp-body">
+          <h3>Senior Software Engineer</h3>
+          <ul>
+            <li>Delivered a B2B SaaS platform on <b>AWS</b> (Node · PostgreSQL) that scaled to <b>200k+</b> monthly API requests.</li>
+            <li>Introduced GitLab CI/CD, dropping deploy time from <b>30 min to 4 min</b> and raising test coverage to <b>85%</b>.</li>
+            <li>Mentored 4 engineers and established the team's TDD and design-system practices.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><span class="lm" style="font-size:12px;letter-spacing:0">JW</span></span>
+          <span class="exp-date">2018 — 2022</span>
+          <span class="exp-co">Watchtower WHQ</span>
+          <span class="exp-loc">Product Owner · SWE</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-role">
+            <div class="exp-role-head">
+              <h3>Product Owner</h3>
+              <span class="exp-role-date">2020 — 2022</span>
+            </div>
+            <ul>
+              <li>Ran <b>Scrum / Agile</b> management for the team.</li>
+              <li>Owned <b>UX lead &amp; strategy</b> across the product.</li>
+              <li>Drove technical discussions on cost, risk, and time estimates, with quarterly reporting to the PM.</li>
+              <li>Led, recruited, and trained <b>UX designers</b> across the world.</li>
+            </ul>
+          </div>
+          <div class="exp-role">
+            <div class="exp-role-head">
+              <h3>Software Engineer</h3>
+              <span class="exp-role-date">2018 — 2020</span>
+            </div>
+            <ul>
+              <li>Built a <b>Vue.js + Electron</b> frontend for an MVP text-editor app supporting multilanguage scripts and Unicode input.</li>
+              <li>Bridged and consumed text-processing APIs from the Foundation Services team using <b>Python</b>.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="exp reveal">
+        <div class="exp-meta">
+          <span class="exp-logo" aria-hidden="true"><span class="lm">DS</span></span>
+          <span class="exp-date">2015 — 2017</span>
+          <span class="exp-co">DocSites</span>
+          <span class="exp-loc">Principal Software Developer</span>
+        </div>
+        <div class="exp-body">
+          <h3>Principal Software Developer</h3>
+          <ul>
+            <li>Delivered client web platforms end-to-end — architecture, build, and launch — as lead developer.</li>
+            <li>Owned front-end delivery across concurrent client projects, standardizing reusable UI components.</li>
+            <li>Developed custom <b>WordPress</b> plugins and reusable themes for content-builder features and data connectors to marketing platforms.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">03 — Stack</span>
+      <h2>The toolkit.</h2>
+      <p>Depth in the frontend and product layer, with the full-stack and cloud range to own a feature end-to-end.</p>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card wide reveal">
+        <div class="skill-head">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg></span>
+          <h4>Frontend &amp; Mobile</h4>
+        </div>
+        <div class="chips">
+          <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">React Native</span>
+          <span class="chip">TypeScript</span><span class="chip">Redux</span><span class="chip">Vue.js</span>
+          <span class="chip">Angular</span><span class="chip">Tailwind CSS</span><span class="chip">SwiftUI</span>
+          <span class="chip">iOS · Swift</span><span class="chip">PWAs</span>
+        </div>
+      </div>
+
+      <div class="skill-card mid reveal" data-d="1">
+        <div class="skill-head">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1"/></svg></span>
+          <h4>AI / SDD</h4>
+        </div>
+        <div class="chips">
+          <span class="chip">LLM integration</span><span class="chip">AI SDK</span><span class="chip">Agentic workflows</span>
+          <span class="chip">Agent builder</span><span class="chip">Custom MCPs</span><span class="chip">Speckit</span>
+          <span class="chip">Quantization</span><span class="chip">Python</span>
+        </div>
+      </div>
+
+      <div class="skill-card small reveal" data-d="2">
+        <div class="skill-head">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2M4 7h16M4 7v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7"/></svg></span>
+          <h4>Backend &amp; Data</h4>
+        </div>
+        <div class="chips">
+          <span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">GraphQL</span>
+          <span class="chip">FastAPI</span><span class="chip">FastMCP</span><span class="chip">PostgreSQL</span>
+          <span class="chip">MongoDB</span><span class="chip">Firebase</span><span class="chip">REST</span>
+          <span class="chip">uv</span><span class="chip">PyPI packaging</span><span class="chip">C# · .NET</span>
+        </div>
+      </div>
+
+      <div class="skill-card mid reveal">
+        <div class="skill-head">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.5 9 4.5 4.5 0 0 0 6 19h11.5z"/></svg></span>
+          <h4>Cloud &amp; DevOps</h4>
+        </div>
+        <div class="chips">
+          <span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">GCP</span>
+          <span class="chip">Docker</span><span class="chip">CI/CD</span><span class="chip">GitLab CI</span>
+        </div>
+      </div>
+
+      <div class="skill-card wide reveal" data-d="1">
+        <div class="skill-head">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <h4>Practices</h4>
+        </div>
+        <div class="chips">
+          <span class="chip">System design</span><span class="chip">Design systems</span><span class="chip">TDD</span>
+          <span class="chip">Agile · Scrum</span><span class="chip">Web accessibility</span><span class="chip">Unit &amp; E2E testing</span>
+          <span class="chip">UX lead &amp; research</span><span class="chip">Performance tuning</span><span class="chip">Cross-functional leadership</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION + CERTS -->
+  <section id="education" class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">04 — Foundations</span>
+      <h2>Education &amp; certifications.</h2>
+    </div>
+    <div class="two-col">
+      <div class="block reveal">
+        <h3>Education</h3>
+        <div class="edu-item">
+          <div class="d">Associate Degree, Computer Science</div>
+          <div class="s">Brevet de Technicien Supérieur · Development — Université Paris Nanterre, France · 2010</div>
+        </div>
+        <div class="edu-item">
+          <div class="d">Baccalauréat Scientifique</div>
+          <div class="s">Lycée Georges Braque · Argenteuil, France · 2006</div>
+        </div>
+      </div>
+      <div class="block reveal" data-d="1">
+        <h3>Certifications</h3>
+        <div class="cert-item">
+          <span class="yr">CSM</span>
+          <span class="t">Certified ScrumMaster</span>
+        </div>
+        <a class="cert-item t" href="https://www.linkedin.com/learning/certificates/cb428cc6dc16847067d0765060e5d0b3e4d03d30495deae6eac5179505091e6c" target="_blank" rel="noopener">
+          <span class="yr">LNDA</span>
+          <span class="t">Become a Full-Stack Web Developer<span>LinkedIn Learning</span></span>
+        </a>
+        <a class="cert-item t" href="https://www.linkedin.com/learning/certificates/d741177dbbad53aa0a3059d679b199e03f5f8605a634b460c01232c600a2f1f7" target="_blank" rel="noopener">
+          <span class="yr">2019</span>
+          <span class="t">React: Using TypeScript<span>LinkedIn Learning</span></span>
+        </a>
+        <a class="cert-item t" href="https://www.linkedin.com/learning/certificates/3176cf9dfe48965b056b670cd4f5e2df71fdf7804d99e4debba8a75b9a9b523d" target="_blank" rel="noopener">
+          <span class="yr">Node</span>
+          <span class="t">Node.js Essential Training<span>LinkedIn Learning</span></span>
+        </a>
+        <a class="cert-item t" href="https://www.linkedin.com/learning/certificates/6364fd8392ad180542931619d4a3711cf566bd862348e8fe1533f3c6f4ef9844" target="_blank" rel="noopener">
+          <span class="yr">SQL</span>
+          <span class="t">NoSQL Essential Training<span>LinkedIn Learning</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section class="foot wrap">
+    <div class="shell reveal">
+      <div class="core foot-core">
+        <span class="eyebrow">Let's build</span>
+        <h2>Have a hard interface problem?<br/>I like those.</h2>
+        <p>Open to Senior Frontend, Full-Stack, and AI product engineering roles — remote or Los Angeles.</p>
+        <div class="foot-actions">
+          <a class="btn btn-primary" href="mailto:emmanuel@exegia.co">
+            emmanuel@exegia.co
+            <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/software-engineer-manuel-defreitas/" target="_blank" rel="noopener">
+            Connect on LinkedIn
+            <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>© 2026 Emmanuel De Freitas</span>
+      <span>Built with HTML, CSS &amp; a little JavaScript · No frameworks.</span>
+    </div>
+  </section>
+</main>
+
+<!-- DOWNLOAD FORMAT PICKER -->
+<div class="dl-overlay" id="dlOverlay" role="dialog" aria-modal="true" aria-labelledby="dlTitle" aria-describedby="dlSub" hidden>
+  <div class="dl-panel" role="document">
+    <button class="dl-close" id="dlClose" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="dl-head">
+      <span class="eyebrow">Download</span>
+      <h3 id="dlTitle">Take the résumé with you.</h3>
+      <p id="dlSub">Same content as this page, formatted for the page. Pick the format that fits where it's going.</p>
+    </div>
+    <div class="dl-options">
+      <button class="dl-opt" id="dlPdf" type="button">
+        <span class="dl-ext">.pdf</span>
+        <span class="dl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+        </span>
+        <span class="dl-kind">PDF</span>
+        <span class="dl-desc">Typeset, print-ready layout. Opens your save dialog — choose “Save as PDF”.</span>
+      </button>
+      <button class="dl-opt" id="dlDocx" type="button">
+        <span class="dl-ext">.docx</span>
+        <span class="dl-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 12.5l1.4 4.5 1.6-3.4 1.6 3.4 1.4-4.5"/></svg>
+        </span>
+        <span class="dl-kind">Word</span>
+        <span class="dl-desc">Editable .docx for Word, Pages, or Google Docs — and ATS-friendly.</span>
+      </button>
+    </div>
+    <div class="dl-note"><kbd>Esc</kbd> <span>to close</span></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  // theme toggle (persisted where storage is available)
+  try{var saved=localStorage.getItem('md-theme'); if(saved) root.setAttribute('data-theme',saved);}catch(e){}
+  function toggle(){
+    var cur=root.getAttribute('data-theme');
+    var isDark = cur ? cur==='dark' : !window.matchMedia('(prefers-color-scheme: light)').matches;
+    var next=isDark?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('md-theme',next);}catch(e){}
+  }
+  var tb=document.getElementById('themeBtn'); if(tb) tb.addEventListener('click',toggle);
+
+  // download dialog — format picker (wired in the download script below)
+
+  // scroll reveal
+  var reveals=[].slice.call(document.querySelectorAll('.reveal'));
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce || !('IntersectionObserver' in window)){
+    reveals.forEach(function(el){el.classList.add('in');});
+  }else{
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+    },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+    reveals.forEach(function(el){io.observe(el);});
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var ASCII_GRID = "000000000000000000000000000000000000000000000000000000000000008766532234466780000000000000000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000000988888755553212433113455700000000000000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000863222111111122222223210135449000000000000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000007211110000000011122111121111543000000000000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000093011000000000000011221111211141600000000000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000008888731111111100000000111122110112222580000000000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000009533332101000011111111000112212210002222334456788880000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000004032110000000000111111100112220220001221222222235767000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000003221100000010000122121210111010011000120111223321254700000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000005211000000011110012111110000000000000010110112222111248000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000098742100000000001111001101000000000000000111100011222112321800000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000456422000000000000000000000011111111111111111111111122210142400000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000007133222110000000000000011111112223333333434454321122211111101600000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000008210011100000000001112223333334566777777777777653211111111001280000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000721112100000001122344555556677788888888887777776520111111111119000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000721111011000112234456666677777778888888887777777773011100000269000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000411100011001222334566777677777788888888888777777777212210001070000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000832000000112333344556777777777788888888888877787777522200011180000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000052100001234444444456666666677788888888888888877777632200001290000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000072201011334444444455666666677788888888888888887777642200011400000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000083211012334434445455667777777777888888888888887777642100111500000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000005231112333333445556677777777777788888888888887777742101111700000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000008223112233333444556677778777777778888888888887777762001101800000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000423212443333344455667788888777788888888888887777775101102000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000822116854434455544455677888877888778888877788877777201104000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000042118866443344455555566777766777877654332233456777301117000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000082128786110000112233445665764555321111223333345777411148800000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000095238883111221110000112334774322111112344556666677512676360000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000842238852332221111110000135788643222320012323567777615776339000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000413238732221111101331111136788766533443335435678877734788548000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000313349532222223333432211247778777654344566678888877752467658000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000343269533333222344433222236778788776667778888888877766655760000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000732160634444444555444323235788788888777888888888777758865770000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000031159843555555555544323335788788888888888888888776646767680000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000052137863345555555544322346788777788888888888777776647777690000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000072426742334455555544223457788877778888888888777776548776800000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000006325742233445555543243346788778877788888887777767457779000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000633752223344454432221124556643578778888888777776478900000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000097652223334444433211011236654588887888887777775490000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000653233334444443321111234444678888888887777664490000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000743333333444433211122211221245555678887776544500000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000942234333322222111124433433333324446877765454600000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000052223333211112222223455444444322334787544544900000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000083222332221111112333344555555554235775344426000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000006222232222332333456777777888888525765343230000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000622222212333333333333455677777632455432479000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000072221111222222222111234566665321354325779000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000009511100111233433335567777533312333368779000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000932100111244455667777876532421224787778000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000042210111222345665665544233210257777777000000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000053321101112234543444322232014677777777790000000000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000073222210011123332333211211367777777777777533469000000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000000974322332100011111111001136777777777777777762002579000000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000000095254332233321111111112235677777777777777777872010001580000000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000007520474333323322222223445566677777777777777778720000110013579000000000000000000000000000000000000000000\n000000000000000000000000000000000000000000000730101465433333322222344445566767777777777887787201000011100002357000000000000000000000000000000000000000\n000000000000000000000000000000000000000009753101101355433333332222234555677777777777777788851010000110011110001246800000000000000000000000000000000000\n000000000000000000000000000000000000008642000000000234433333333323334556677777777777777886200101111111110011111000125790000000000000000000000000000000\n000000000000000000000000000000000007531000010000000034333334333333455666777677777777887520011111111111111110000111100024790000000000000000000000000000\n000000000000000000000000000000086421000000000000000012444334444333455566666667777887531001101111111111111111101010111100024700000000000000000000000000\n000000000000000000000000000086310000000000000000000000123334455443444556666677776431000110011111111111111111111111111111110125700000000000000000000000\n000000000000000000000000086310000000000000000000000000001122355554455555545443210000111001111111111111111111111111111111111111135780000000000000000000\n000000000000000000000075310001000000000000000000000000000000111112212111110000000110000111111111111111111111111111111111111111111123579000000000000000\n000000000000000000964210001000000000000000000000000000000000000000000000000000000000111111111111111111111111111111111111111000011110012468000000000000\n000000000000000864200001000000000000000111111110000000000000000000000000000000000000111111111111111111111111111111111111111111111111111112368000000000\n000000000000753100011000000000000000000111111111000000000000000000000000000000000011111111111111111111111111111111111111111111111111111111111400000000\n000000000072100111100000000000000000000011111111100000000000000000000000000000000011101111111111111111111111111111111111111111111111111111111039000000\n000000000510111111100000000000000000000010000011011111001011000000000000000000111001111111111111111111111111111111111111111111111111111111111112800000\n000000083011111100111100000001001100010000001011111110101111110000000000000001111111111111111111111111111111111111111111111111111111111111111111280000\n000000721110101111011111111111111111011000111110111011111111111111111010000111111111111111111111111111111111111111111111111111111111111111111111127000\n000008211111101111111111111111111111111111111110001111111111111111111010011111111111111111111111111111111111111111111111111111111111111111111111111700\n000082111111111111111111111111111111111111111111110111011111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111170\n000041111111111111111111111111111111111111111111111111111111111011111111111111111111111111111111111111111111111111111111111111111111111111111111111117\n000611110111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112\n008211101111111111111111111111111111111111111111111111111111111111110111111111111111111111111111111111111111111111111111111111111111111111111111111112\n005111101111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112\n082111101111111111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111111111112\n051111100111111111111111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111112\n031121110111111111111111111111111111111111111111111111111111111111101011111111111111111111111111111111111111111111111111111111111111111111111111111112\n721111111111111111111111111111111111111111111111111111111111111111101001011111111111111111111111111111111111111111111111111111111111111111111111111112\n611111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112\n411111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112\n311011111111101111111111111111111111111111111111111111111111111111110100111111111111111111111111111111111111111111111111111111111111111111111111111112\n321111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112221111112111111111111222221122222212";
+  var REVEAL = 0.5;       // reveal reach: cursor within 50% of face->far-edge distance
+  var SIZE   = 1.42;      // ~1.5x portrait
+  var BASE_OP = 0.2;      // always-visible opacity
+  var ACTIVE_OP = 0.7;    // peak opacity under the cursor
+  var root=document.documentElement, wrap=document.querySelector('.ascii-portrait'), cv=document.getElementById('asciiCanvas');
+  if(!wrap||!cv) return;
+  var ctx=cv.getContext('2d');
+  var ramp=" .:-=+*#%@";
+  var rows=ASCII_GRID.split("\n");
+  var R=rows.length, C=rows[0].length;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
+  var W,H,Wp,Hp,cellW,cellH,offX,offY,col,faceX,fontStr;
+  var base=document.createElement('canvas'), bx=base.getContext('2d');
+  var boost=document.createElement('canvas'), bo=boost.getContext('2d');
+
+  function accent(){ var v=getComputedStyle(root).getPropertyValue('--accent').trim(); return v||'#25E3C3'; }
+
+  function renderBase(){
+    bx.setTransform(dpr,0,0,dpr,0,0);
+    bx.clearRect(0,0,W,H);
+    bx.textAlign='center'; bx.textBaseline='middle'; bx.font=fontStr; bx.fillStyle=col;
+    for(var r=0;r<R;r++){
+      var row=rows[r];
+      for(var c=0;c<C;c++){
+        var lvl=+row[c];
+        if(!lvl) continue;
+        bx.globalAlpha=0.16+0.84*(lvl/9);
+        bx.fillText(ramp[lvl], offX+c*cellW+cellW/2, offY+r*cellH+cellH/2);
+      }
+    }
+    bx.globalAlpha=1;
+  }
+  function drawBaseFlat(){
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,Wp,Hp);
+    ctx.globalAlpha=BASE_OP*(reduce?1.6:1);
+    ctx.drawImage(base,0,0);
+    ctx.globalAlpha=1;
+  }
+  function layout(){
+    var r=wrap.getBoundingClientRect(); W=r.width; H=r.height; Wp=Math.round(W*dpr); Hp=Math.round(H*dpr);
+    cv.width=Wp; cv.height=Hp; cv.style.width=W+'px'; cv.style.height=H+'px';
+    base.width=Wp; base.height=Hp; boost.width=Wp; boost.height=Hp;
+    cellH=(H*SIZE)/R; cellW=cellH*0.56;
+    var gW=cellW*C, gH=cellH*R;
+    offX=W-gW*0.82; offY=(H-gH)/2;
+    faceX=r.left+offX+gW*0.45;
+    fontStr='600 '+(cellH*1.05).toFixed(1)+'px "JetBrains Mono", ui-monospace, monospace';
+    col=accent();
+    renderBase();
+    drawBaseFlat();
+  }
+  layout();
+  window.addEventListener('resize',layout);
+  new MutationObserver(function(){ layout(); }).observe(root,{attributes:true,attributeFilter:['data-theme']});
+
+  if(reduce) return;   // static always-visible portrait, no interaction
+
+  var mx=-9999,my=-9999,mxp=-9999,myp=-9999,presence=0,lastMove=0,raf=0;
+  function onMove(e){
+    var r=wrap.getBoundingClientRect();
+    mx=e.clientX-r.left; my=e.clientY-r.top; mxp=mx*dpr; myp=my*dpr;
+    lastMove=performance.now();
+    if(!raf) loop();
+  }
+  window.addEventListener('mousemove',onMove,{passive:true});
+  window.addEventListener('mouseleave',function(){ lastMove=0; });
+
+  function loop(){
+    raf=requestAnimationFrame(loop);
+    var now=performance.now();
+    presence += (((now-lastMove<160)?1:0)-presence)*0.10;
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,Wp,Hp);
+    ctx.globalAlpha=BASE_OP; ctx.drawImage(base,0,0); ctx.globalAlpha=1;
+    if(presence<0.01){ cancelAnimationFrame(raf); raf=0; return; }
+    var RAD=Math.max(240, faceX*REVEAL)*dpr;
+    bo.setTransform(1,0,0,1,0,0);
+    bo.clearRect(0,0,Wp,Hp);
+    bo.globalAlpha=1; bo.drawImage(base,0,0);
+    bo.globalCompositeOperation='destination-in';
+    var g=bo.createRadialGradient(mxp,myp,0,mxp,myp,RAD);
+    g.addColorStop(0,'rgba(0,0,0,1)'); g.addColorStop(0.55,'rgba(0,0,0,0.9)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    bo.fillStyle=g; bo.fillRect(0,0,Wp,Hp);
+    bo.globalCompositeOperation='source-over';
+    ctx.globalAlpha=((ACTIVE_OP-BASE_OP)/0.8)*presence;
+    ctx.drawImage(boost,0,0);
+    ctx.globalAlpha=1;
+    // subtle character shuffle near the cursor
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=fontStr; ctx.fillStyle=col;
+    var hotR=Math.min(W,H)*0.13+70;
+    var cMin=Math.max(0,Math.floor((mx-hotR-offX)/cellW)), cMax=Math.min(C-1,Math.ceil((mx+hotR-offX)/cellW));
+    var rMin=Math.max(0,Math.floor((my-hotR-offY)/cellH)), rMax=Math.min(R-1,Math.ceil((my+hotR-offY)/cellH));
+    for(var r=rMin;r<=rMax;r++){
+      var row=rows[r];
+      for(var c=cMin;c<=cMax;c++){
+        var lvl=+row[c];
+        if(!lvl) continue;
+        var px=offX+c*cellW+cellW/2, py=offY+r*cellH+cellH/2;
+        var d=Math.hypot(px-mx,py-my);
+        if(d>hotR) continue;
+        var tt=1-d/hotR;
+        if(Math.random()<0.10*tt*presence){
+          ctx.globalAlpha=ACTIVE_OP*(0.5+0.5*tt)*presence;
+          ctx.fillText(ramp[1+((Math.random()*8)|0)], px, py);
+        }
+      }
+    }
+    ctx.globalAlpha=1;
+    ctx.setTransform(1,0,0,1,0,0);
+  }
+})();
+</script>
+
+<script>
+/* ============================================================
+   DOWNLOAD — format picker + client-side .docx writer
+   No libraries: OOXML built by hand, packed into a STORE zip.
+   ============================================================ */
+(function(){
+  var FILE_BASE = 'Emmanuel-De-Freitas-Resume';
+
+  /* ---------- résumé content (mirrors the page) ---------- */
+  var CV = {
+    name:'Emmanuel De Freitas',
+    role:'Senior Software Engineer  ·  Frontend & AI Product Engineering',
+    contact:'emmanuel@exegia.co  ·  Remote / Los Angeles  ·  linkedin.com/in/software-engineer-manuel-defreitas  ·  x.com/mannydefreitas7',
+    summary:'Senior engineer with **10+ years** across React, React Native, and native iOS, now focused on **AI-driven product experiences**. I turn ambiguous problems into shipped, accessible interfaces — owning the work from design system to deployment, and mentoring the teams that keep it alive.',
+    focus:'Frontend architecture · AI / LLM integration · React & React Native · Design systems · Accessibility (a11y) · Cloud & CI/CD',
+    highlights:[
+      '10+ years shipping',
+      '4 platforms — web · Expo · desktop',
+      '20+ products delivered',
+      'Core focus — TypeScript · AI'
+    ],
+    experience:[
+      { co:'The Motley Fool', loc:'Contract · Remote', date:'Jun 2025 — Mar 2026', roles:[
+        { title:'React Native Developer', bullets:[
+          'Maintained and upgraded the official **React Native** (Expo) app for stock management at The Motley Fool.',
+          'Implemented feature improvements and resolved bugs to sharpen the in-app user experience.',
+          'Collaborated with cross-functional teams to keep app functionality and performance seamless.'
+        ]}
+      ]},
+      { co:'High Fidelity', loc:'Remote', date:'Apr 2025 — Jun 2025', roles:[
+        { title:'Sr. Front End Engineer', bullets:[
+          'Built and extended real-time audio/video features for the **Quad** app via the **Agora SDK** API, wired up with **Python**.',
+          'Engineered the frontend UI and canvas rendering with **Svelte** and **PixiJS** for smooth drawing of complex canvas objects.',
+          'Used **Cursor AI** to plan feature implementation and document the cost/performance strategy.'
+        ]}
+      ]},
+      { co:'PwC', loc:'', date:'Feb 2025 — Apr 2025', roles:[
+        { title:'Full Stack Developer', bullets:[
+          'Joined an **MVP** initiative to automate the auditing process and requirement validation with **AI** assistance.',
+          'Contributed to a **microfrontend React** app — implementing feature specs and growing the internal **UX design system** components.',
+          'Supported the **BFF (Backend-for-Frontend)** layer in **.NET / C#**, developing in VS Code.',
+          'Ran code reviews on **Azure DevOps** and improved unit-test coverage and **CI** automation.'
+        ]}
+      ]},
+      { co:'CurbsideSOS', loc:'', date:'Nov 2024 — Feb 2025', roles:[
+        { title:'Senior Software Engineer', bullets:[
+          'Led a **React Native** rewrite that lifted the App Store rating from **3.8 to 4.7** and crash-free sessions to **99.5%**.',
+          'Cut cold-start time **~45%** through bundle splitting and native-module optimization.',
+          'Built a live dispatch dashboard in **React + D3.js** visualizing 1k+ concurrent roadside requests.'
+        ]}
+      ]},
+      { co:'OpSource', loc:'', date:'Feb 2022 — 2024', roles:[
+        { title:'Senior Software Engineer', bullets:[
+          'Delivered a B2B SaaS platform on **AWS** (Node · PostgreSQL) that scaled to **200k+** monthly API requests.',
+          'Introduced GitLab CI/CD, dropping deploy time from **30 min to 4 min** and raising test coverage to **85%**.',
+          'Mentored 4 engineers and established the team’s TDD and design-system practices.'
+        ]}
+      ]},
+      { co:'Watchtower WHQ', loc:'', date:'2018 — 2022', roles:[
+        { title:'Product Owner', date:'2020 — 2022', bullets:[
+          'Ran **Scrum / Agile** management for the team.',
+          'Owned **UX lead & strategy** across the product.',
+          'Drove technical discussions on cost, risk, and time estimates, with quarterly reporting to the PM.',
+          'Led, recruited, and trained **UX designers** across the world.'
+        ]},
+        { title:'Software Engineer', date:'2018 — 2020', bullets:[
+          'Built a **Vue.js + Electron** frontend for an MVP text-editor app supporting multilanguage scripts and Unicode input.',
+          'Bridged and consumed text-processing APIs from the Foundation Services team using **Python**.'
+        ]}
+      ]},
+      { co:'DocSites', loc:'', date:'2015 — 2017', roles:[
+        { title:'Principal Software Developer', bullets:[
+          'Delivered client web platforms end-to-end — architecture, build, and launch — as lead developer.',
+          'Owned front-end delivery across concurrent client projects, standardizing reusable UI components.',
+          'Developed custom **WordPress** plugins and reusable themes for content-builder features and data connectors to marketing platforms.'
+        ]}
+      ]}
+    ],
+    skills:[
+      { h:'Frontend & Mobile', v:'React · Next.js · React Native · TypeScript · Redux · Vue.js · Angular · Tailwind CSS · SwiftUI · iOS / Swift · PWAs' },
+      { h:'AI / SDD', v:'LLM integration · AI SDK · Agentic workflows · Agent builder · Custom MCPs · Speckit · Quantization · Python' },
+      { h:'Backend & Data', v:'Node.js · Express · GraphQL · FastAPI · FastMCP · PostgreSQL · MongoDB · Firebase · REST · uv · PyPI packaging · C# / .NET' },
+      { h:'Cloud & DevOps', v:'AWS · Azure · GCP · Docker · CI/CD · GitLab CI' },
+      { h:'Practices', v:'System design · Design systems · TDD · Agile / Scrum · Web accessibility · Unit & E2E testing · UX lead & research · Performance tuning · Cross-functional leadership' }
+    ],
+    education:[
+      { d:'Associate Degree, Computer Science', s:'Brevet de Technicien Supérieur · Development — Université Paris Nanterre, France · 2010' },
+      { d:'Baccalauréat Scientifique', s:'Lycée Georges Braque · Argenteuil, France · 2006' }
+    ],
+    certifications:[
+      'Certified ScrumMaster (CSM)',
+      'Become a Full-Stack Web Developer — LinkedIn Learning',
+      'React: Using TypeScript — LinkedIn Learning',
+      'Node.js Essential Training — LinkedIn Learning',
+      'NoSQL Essential Training — LinkedIn Learning'
+    ]
+  };
+
+  /* ---------- OOXML helpers ---------- */
+  var FONT='Calibri', INK='111820', MUTED='454F5B', FAINT='6B7684', ACCENT='0A7A67';
+  var RIGHT_TAB=10080; // Letter, 1" margins → 6.5" ... using 0.75" margins below
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                    .replace(/"/g,'&quot;');
+  }
+  function rPr(o){
+    var x='<w:rPr><w:rFonts w:ascii="'+FONT+'" w:hAnsi="'+FONT+'" w:cs="'+FONT+'"/>';
+    if(o.b) x+='<w:b/>';
+    if(o.i) x+='<w:i/>';
+    if(o.caps) x+='<w:caps/>';
+    x+='<w:color w:val="'+(o.color||INK)+'"/>';
+    if(o.ls) x+='<w:spacing w:val="'+o.ls+'"/>';
+    x+='<w:sz w:val="'+(o.sz||21)+'"/><w:szCs w:val="'+(o.sz||21)+'"/></w:rPr>';
+    return x;
+  }
+  function run(text,o){
+    o=o||{};
+    return '<w:r>'+rPr(o)+'<w:t xml:space="preserve">'+esc(text)+'</w:t></w:r>';
+  }
+  function tab(o){ return '<w:r>'+rPr(o||{})+'<w:tab/></w:r>'; }
+  // "plain **bold** plain" → runs
+  function rich(text,o){
+    o=o||{};
+    var out='', parts=String(text).split(/\*\*/), i;
+    for(i=0;i<parts.length;i++){
+      if(!parts[i]) continue;
+      var oo={}, k; for(k in o) oo[k]=o[k];
+      if(i%2===1) oo.b=true;
+      out+=run(parts[i],oo);
+    }
+    return out;
+  }
+  function para(runs,o){
+    o=o||{};
+    var x='<w:p><w:pPr>';
+    if(o.keepNext) x+='<w:keepNext/>';
+    if(o.rule) x+='<w:pBdr><w:bottom w:val="single" w:sz="4" w:space="4" w:color="C9D2DA"/></w:pBdr>';
+    if(o.tabRight||o.tabLeft){
+      x+='<w:tabs>';
+      if(o.tabLeft)  x+='<w:tab w:val="left" w:pos="'+o.tabLeft+'"/>';
+      if(o.tabRight) x+='<w:tab w:val="right" w:pos="'+o.tabRight+'"/>';
+      x+='</w:tabs>';
+    }
+    x+='<w:spacing w:before="'+(o.before||0)+'" w:after="'+(o.after===undefined?60:o.after)+'" w:line="'+(o.line||264)+'" w:lineRule="auto"/>';
+    if(o.ind) x+='<w:ind w:left="'+o.ind+'"'+(o.hanging?' w:hanging="'+o.hanging+'"':'')+'/>';
+    if(o.align) x+='<w:jc w:val="'+o.align+'"/>';
+    x+='</w:pPr>'+runs+'</w:p>';
+    return x;
+  }
+  function sectionHead(label){
+    return para(run(label,{b:true,caps:true,sz:19,color:ACCENT,ls:30}),
+                {before:300,after:80,rule:true,keepNext:true});
+  }
+  function bullet(text){
+    return para(run('•',{color:ACCENT})+tab()+rich(text,{color:MUTED}),
+                {ind:300,hanging:300,tabLeft:300,after:50});
+  }
+
+  function documentXml(){
+    var b='', i, j, k;
+    // header block
+    b+=para(run(CV.name,{b:true,sz:44,ls:-8}),{after:30});
+    b+=para(run(CV.role,{sz:21,color:ACCENT}),{after:40});
+    b+=para(run(CV.contact,{sz:18,color:FAINT}),{after:60,rule:true});
+
+    // profile
+    b+=sectionHead('Profile');
+    b+=para(rich(CV.summary,{color:MUTED}),{after:100});
+    b+=para(run(CV.focus,{sz:19,color:FAINT}),{after:60});
+    b+=para(run(CV.highlights.join('   ·   '),{sz:19,color:FAINT,i:true}),{after:60});
+
+    // experience
+    b+=sectionHead('Experience');
+    for(i=0;i<CV.experience.length;i++){
+      var e=CV.experience[i];
+      b+=para(run(e.co,{b:true,sz:23})+tab()+run(e.date,{sz:19,color:FAINT}),
+              {tabRight:RIGHT_TAB,before:140,after:e.loc?20:40,keepNext:true});
+      if(e.loc) b+=para(run(e.loc,{sz:18,color:FAINT,i:true}),{after:40,keepNext:true});
+      for(j=0;j<e.roles.length;j++){
+        var rl=e.roles[j];
+        b+=para(run(rl.title,{sz:20,color:INK,i:true})+(rl.date?tab()+run(rl.date,{sz:18,color:FAINT}):''),
+                {tabRight:RIGHT_TAB,after:50,keepNext:true});
+        for(k=0;k<rl.bullets.length;k++) b+=bullet(rl.bullets[k]);
+      }
+    }
+
+    // skills
+    b+=sectionHead('Stack');
+    for(i=0;i<CV.skills.length;i++){
+      b+=para(run(CV.skills[i].h+':  ',{b:true,sz:20})+run(CV.skills[i].v,{sz:20,color:MUTED}),{after:70});
+    }
+
+    // education
+    b+=sectionHead('Education');
+    for(i=0;i<CV.education.length;i++){
+      b+=para(run(CV.education[i].d,{b:true,sz:20}),{after:20,keepNext:true});
+      b+=para(run(CV.education[i].s,{sz:19,color:FAINT}),{after:80});
+    }
+
+    // certifications
+    b+=sectionHead('Certifications');
+    for(i=0;i<CV.certifications.length;i++) b+=bullet(CV.certifications[i]);
+
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+      '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+      '<w:body>'+b+
+      '<w:sectPr><w:pgSz w:w="12240" w:h="15840"/>'+
+      '<w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080" w:header="720" w:footer="720" w:gutter="0"/>'+
+      '</w:sectPr></w:body></w:document>';
+  }
+
+  var CONTENT_TYPES='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'+
+    '<Default Extension="xml" ContentType="application/xml"/>'+
+    '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'+
+    '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'+
+    '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>'+
+    '<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>'+
+    '</Types>';
+
+  var ROOT_RELS='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'+
+    '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>'+
+    '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>'+
+    '</Relationships>';
+
+  var DOC_RELS='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+    '</Relationships>';
+
+  var STYLES='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+    '<w:docDefaults><w:rPrDefault><w:rPr>'+
+    '<w:rFonts w:ascii="'+FONT+'" w:hAnsi="'+FONT+'" w:eastAsia="'+FONT+'" w:cs="'+FONT+'"/>'+
+    '<w:color w:val="'+INK+'"/><w:sz w:val="21"/><w:szCs w:val="21"/>'+
+    '</w:rPr></w:rPrDefault>'+
+    '<w:pPrDefault><w:pPr><w:spacing w:after="60" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault>'+
+    '</w:docDefaults>'+
+    '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>'+
+    '</w:styles>';
+
+  var CORE='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '+
+    'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" '+
+    'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
+    '<dc:title>Emmanuel De Freitas — Résumé</dc:title>'+
+    '<dc:creator>Emmanuel De Freitas</dc:creator>'+
+    '<cp:lastModifiedBy>Emmanuel De Freitas</cp:lastModifiedBy>'+
+    '</cp:coreProperties>';
+
+  var APP='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" '+
+    'xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">'+
+    '<Application>emmanuel.live</Application></Properties>';
+
+  /* ---------- minimal STORE-method zip writer ---------- */
+  var CRC_TABLE=(function(){
+    var t=new Uint32Array(256), c, n, k;
+    for(n=0;n<256;n++){
+      c=n;
+      for(k=0;k<8;k++) c = (c&1) ? (0xEDB88320 ^ (c>>>1)) : (c>>>1);
+      t[n]=c>>>0;
+    }
+    return t;
+  })();
+  function crc32(buf){
+    var c=0xFFFFFFFF, i;
+    for(i=0;i<buf.length;i++) c=CRC_TABLE[(c^buf[i])&0xFF] ^ (c>>>8);
+    return (c^0xFFFFFFFF)>>>0;
+  }
+  function utf8(str){
+    if(typeof TextEncoder!=='undefined') return new TextEncoder().encode(str);
+    var s=unescape(encodeURIComponent(str)), a=new Uint8Array(s.length), i;
+    for(i=0;i<s.length;i++) a[i]=s.charCodeAt(i);
+    return a;
+  }
+  function zipStore(files){
+    var chunks=[], central=[], offset=0, total=0, i;
+    function u16(v){ return [v&0xFF,(v>>>8)&0xFF]; }
+    function u32(v){ return [v&0xFF,(v>>>8)&0xFF,(v>>>16)&0xFF,(v>>>24)&0xFF]; }
+    var DOS_TIME=0, DOS_DATE=0x0021; // 1980-01-01, deterministic output
+
+    for(i=0;i<files.length;i++){
+      var name=utf8(files[i].name), data=files[i].data, crc=crc32(data);
+      var lh=[].concat(
+        u32(0x04034b50), u16(20), u16(0x0800), u16(0), u16(DOS_TIME), u16(DOS_DATE),
+        u32(crc), u32(data.length), u32(data.length), u16(name.length), u16(0));
+      chunks.push(new Uint8Array(lh), name, data);
+      total += lh.length + name.length + data.length;
+      central.push({name:name, crc:crc, size:data.length, offset:offset});
+      offset += lh.length + name.length + data.length;
+    }
+    var cdStart=offset, cdSize=0;
+    for(i=0;i<central.length;i++){
+      var e=central[i];
+      var ch=[].concat(
+        u32(0x02014b50), u16(20), u16(20), u16(0x0800), u16(0), u16(DOS_TIME), u16(DOS_DATE),
+        u32(e.crc), u32(e.size), u32(e.size), u16(e.name.length), u16(0), u16(0),
+        u16(0), u16(0), u32(0), u32(e.offset));
+      chunks.push(new Uint8Array(ch), e.name);
+      cdSize += ch.length + e.name.length;
+      total += ch.length + e.name.length;
+    }
+    var eocd=[].concat(u32(0x06054b50), u16(0), u16(0), u16(central.length), u16(central.length),
+                       u32(cdSize), u32(cdStart), u16(0));
+    chunks.push(new Uint8Array(eocd));
+    total += eocd.length;
+
+    var out=new Uint8Array(total), pos=0;
+    for(i=0;i<chunks.length;i++){ out.set(chunks[i],pos); pos+=chunks[i].length; }
+    return out;
+  }
+
+  function buildDocx(){
+    return zipStore([
+      {name:'[Content_Types].xml', data:utf8(CONTENT_TYPES)},
+      {name:'_rels/.rels',         data:utf8(ROOT_RELS)},
+      {name:'docProps/core.xml',   data:utf8(CORE)},
+      {name:'docProps/app.xml',    data:utf8(APP)},
+      {name:'word/document.xml',   data:utf8(documentXml())},
+      {name:'word/_rels/document.xml.rels', data:utf8(DOC_RELS)},
+      {name:'word/styles.xml',     data:utf8(STYLES)}
+    ]);
+  }
+
+  /* ---------- delivery ---------- */
+  function downloadDocx(){
+    var blob=new Blob([buildDocx()],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url; a.download=FILE_BASE+'.docx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},1500);
+  }
+  function downloadPdf(){
+    var prev=document.title;
+    document.title=FILE_BASE;
+    window.print();
+    setTimeout(function(){document.title=prev;},800);
+  }
+
+  /* ---------- dialog ---------- */
+  var overlay=document.getElementById('dlOverlay');
+  if(!overlay) return;
+  var panelFirst=document.getElementById('dlPdf'), lastTrigger=null, openT=null;
+
+  function open(trigger){
+    lastTrigger=trigger||null;
+    overlay.hidden=false;
+    requestAnimationFrame(function(){ overlay.classList.add('open'); });
+    clearTimeout(openT);
+    openT=setTimeout(function(){ if(panelFirst) panelFirst.focus(); },60);
+    document.addEventListener('keydown',onKey,true);
+  }
+  function close(){
+    overlay.classList.remove('open');
+    document.removeEventListener('keydown',onKey,true);
+    clearTimeout(openT);
+    openT=setTimeout(function(){ overlay.hidden=true; },380);
+    if(lastTrigger && lastTrigger.focus) lastTrigger.focus();
+  }
+  function onKey(e){
+    if(e.key==='Escape'){ e.preventDefault(); close(); return; }
+    if(e.key!=='Tab') return;
+    var f=overlay.querySelectorAll('button');
+    if(!f.length) return;
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+
+  ['printBtn','printBtn2'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.addEventListener('click',function(){ open(el); });
+  });
+  document.getElementById('dlClose').addEventListener('click',close);
+  overlay.addEventListener('mousedown',function(e){ if(e.target===overlay) close(); });
+  document.getElementById('dlPdf').addEventListener('click',function(){ close(); setTimeout(downloadPdf,420); });
+  document.getElementById('dlDocx').addEventListener('click',function(){ downloadDocx(); close(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+.remember
+node_modules
+portrait.png
+ascii_grid.txt
+index.html.bak
+*.py
