@@ -360,6 +360,12 @@ body.chat-lock{overflow:hidden}
   padding:7px 12px;border:1px solid var(--hairline);border-radius:999px;background:var(--surface-2);
   transition:color .25s var(--ease),border-color .25s var(--ease)}
 .chat-chip:hover{color:var(--accent);border-color:var(--accent)}
+.contact-actions{align-self:flex-start;max-width:86%;display:flex;flex-wrap:wrap;gap:8px}
+.contact-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11.5px;
+  color:var(--ink-muted);cursor:pointer;padding:7px 12px;border:1px solid var(--hairline);border-radius:999px;
+  background:var(--surface-2);text-decoration:none;transition:color .25s var(--ease),border-color .25s var(--ease)}
+.contact-btn:hover{color:var(--accent);border-color:var(--accent)}
+.contact-btn svg{width:12px;height:12px;flex:none}
 .chat-form{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--hairline)}
 .chat-input{flex:1;min-width:0;font-family:var(--font-body);font-size:14px;color:var(--ink);
   background:var(--surface-2);border:1px solid var(--hairline);border-radius:999px;padding:11px 18px;outline:none;
@@ -1553,7 +1559,7 @@ if(chatLog) new MutationObserver(function(muts){
       a:"10+ years shipping web, mobile, and design systems — from startups (CurbsideSOS, High Fidelity) to enterprise (PwC), with product-owner experience leading distributed teams." },
     { k:['contact','email','call','interview','schedule','meet','reach'],
       q:'How do I schedule an interview?',
-      a:"Email emmanuel@exegia.co and he'll get back to you quickly — or connect on LinkedIn (link in the header above)." }
+      a:"Feel free to contact Emmanuel directly — email, a call, or LinkedIn all work, and he'll get back to you quickly." }
   ];
   var STAR={
     'The Motley Fool':{role:'React Native Developer',
@@ -1605,12 +1611,37 @@ if(chatLog) new MutationObserver(function(muts){
     if(on&&!t){ t=document.createElement('div'); t.className='chat-typing'; t.innerHTML='<i></i><i></i><i></i>'; log.appendChild(t); scrollLog(); }
     if(!on&&t) t.remove();
   }
+  var CONTACT_PHONE='+17472212230', CONTACT_PHONE_DISPLAY='+1 747-221-2230',
+      CONTACT_EMAIL='emmanuel@exegia.co', CONTACT_LINKEDIN='https://www.linkedin.com/in/software-engineer-manuel-defreitas/';
+  function addContactActions(){
+    var row=document.createElement('div'); row.className='contact-actions';
+    var items=[
+      {label:'Call me now', href:'tel:'+CONTACT_PHONE,
+       icon:'<path d="M4 5c0 8.5 6.5 15 15 15l3-4-5-3-2 2c-2-1-4-3-5-5l2-2-3-5z"/>'},
+      {label:'Send email',
+       href:'mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Reaching out from your AI screening chat')+
+            '&body='+encodeURIComponent('Hi Emmanuel,\n\n'),
+       icon:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'},
+      {label:'Message me on LinkedIn', href:CONTACT_LINKEDIN, target:'_blank',
+       icon:'<path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45z"/>'}
+    ];
+    items.forEach(function(it){
+      var a=document.createElement('a'); a.className='contact-btn'; a.href=it.href;
+      if(it.target){ a.target=it.target; a.rel='noopener' }
+      a.setAttribute('data-cuelume-press',''); a.setAttribute('data-cuelume-release','');
+      var fillAttr=it.href.indexOf('linkedin')>-1?'fill="currentColor"':'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"';
+      a.innerHTML='<svg viewBox="0 0 24 24" '+fillAttr+' aria-hidden="true">'+it.icon+'</svg><span>'+it.label+'</span>';
+      row.appendChild(a);
+    });
+    log.appendChild(row); scrollLog();
+  }
   function addAI(text,done){
     var m=document.createElement('div'); m.className='msg ai'; log.appendChild(m);
-    if(reduce){ m.textContent=text; scrollLog(); if(done)done(); return; }
+    function finish(){ if(/contact/i.test(text)) addContactActions(); if(done)done() }
+    if(reduce){ m.textContent=text; scrollLog(); finish(); return; }
     var words=text.split(/(\s+)/), i=0;
     (function step(){
-      if(i>=words.length){ if(done)done(); return; }
+      if(i>=words.length){ finish(); return; }
       m.textContent+=words[i++]; scrollLog(); setTimeout(step,18);
     })();
   }
