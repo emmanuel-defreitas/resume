@@ -146,11 +146,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "bad_request" });
   }
 
-  if (!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL_OIDC_TOKEN) {
-    console.error("No AI Gateway auth: neither AI_GATEWAY_API_KEY nor VERCEL_OIDC_TOKEN is set");
-    return res.status(503).json({ error: "not_configured" });
-  }
-
+  // No env pre-check: on deployments the OIDC token arrives via the request
+  // context (not process.env), so let the SDK resolve auth — 401/403 below
+  // still surfaces as not_configured.
   try {
     const result = await generateText({
       model: MODEL,
