@@ -35,8 +35,8 @@
   --accent:#25E3C3;
   --accent-deep:#12B9A0;
   --accent-ink:#052421;
-  --glow-a:rgba(37,227,195,0.20);
-  --glow-b:rgba(80,120,255,0.16);
+  --glow-a:rgba(255,255,255,0.10);
+  --glow-b:rgba(255,255,255,0.06);
   --grid-line:rgba(255,255,255,0.028);
 }
 :root[data-theme="light"]{
@@ -52,8 +52,8 @@
   --accent:#0C8F79;
   --accent-deep:#0A7A67;
   --accent-ink:#F2FFFB;
-  --glow-a:rgba(12,143,121,0.12);
-  --glow-b:rgba(70,110,240,0.10);
+  --glow-a:rgba(8,20,30,0.07);
+  --glow-b:rgba(8,20,30,0.04);
   --grid-line:rgba(8,20,30,0.035);
 }
 @media (prefers-color-scheme: light){
@@ -62,7 +62,7 @@
     --hairline:rgba(8,20,30,0.09); --hairline-strong:rgba(8,20,30,0.16);
     --ink:#0C1116; --ink-muted:#4C5665; --ink-faint:#8A94A3;
     --accent:#0C8F79; --accent-deep:#0A7A67; --accent-ink:#F2FFFB;
-    --glow-a:rgba(12,143,121,0.12); --glow-b:rgba(70,110,240,0.10);
+    --glow-a:rgba(8,20,30,0.07); --glow-b:rgba(8,20,30,0.04);
     --grid-line:rgba(8,20,30,0.035);
   }
 }
@@ -153,15 +153,15 @@ li{list-style:none}
    ============================================================ */
 main{position:relative;z-index:1}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+/* .wrap zeroes vertical padding (class beats the `section` element rule), so restore section breathing room explicitly */
+section.wrap{padding-top:48px}
 section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 .eyebrow{
-  display:inline-flex;align-items:center;gap:9px;
+  display:inline-flex;align-items:center;gap:9px;width:fit-content;
   font-family:var(--font-mono);font-size:11px;font-weight:500;
   text-transform:uppercase;letter-spacing:.24em;color:var(--accent);
-  padding:6px 13px;border:1px solid var(--hairline-strong);border-radius:999px;
-  background:color-mix(in srgb, var(--accent) 8%, transparent);
 }
-.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
 .sec-head{display:flex;flex-direction:column;gap:18px;margin-bottom:52px}
 .sec-head h2{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4.6vw,44px);line-height:1.04;letter-spacing:-.02em;text-wrap:balance}
 .sec-head p{color:var(--ink-muted);max-width:56ch}
@@ -198,8 +198,8 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 .btn .cap{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;transition:transform .4s var(--ease),background .4s var(--ease)}
 .btn .cap svg{width:15px;height:15px}
 .btn:active{transform:scale(.975)}
-.btn-primary{background:var(--accent);color:var(--accent-ink)}
-.btn-primary .cap{background:rgba(0,0,0,.16)}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-primary .cap{background:color-mix(in srgb,var(--bg) 18%,transparent)}
 .btn-primary:hover .cap{transform:translate(2px,-1px)}
 .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--hairline-strong)}
 .btn-ghost .cap{background:var(--hairline)}
@@ -317,6 +317,8 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   background:var(--surface-2);border:1px solid var(--hairline);color:var(--ink);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
 .exp-logo svg{width:24px;height:24px}
+.exp-logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:4px;border-radius:inherit}
+.exp-logo img.fill{object-fit:cover;padding:0}
 .exp-logo .lm{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-.03em;line-height:1;color:var(--ink)}
 .exp-date{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.02em}
 .exp-co{font-family:var(--font-mono);font-size:13px;color:var(--ink);font-weight:600}
@@ -325,8 +327,8 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 .exp-body ul{display:flex;flex-direction:column;gap:11px}
 .exp-body li{position:relative;padding-left:24px;color:var(--ink-muted);font-size:15px}
 .exp-body li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:2px;
-  background:var(--accent);transform:rotate(45deg);opacity:.9}
-.exp-body li b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  background:var(--ink-faint);transform:rotate(45deg);opacity:.9}
+.exp-body li b{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
 .exp-role + .exp-role{margin-top:24px;padding-top:24px;border-top:1px solid var(--hairline)}
 .exp-role-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .exp-role-head h3{margin-bottom:0}
@@ -686,7 +688,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 15.6C4.8 11 6 7.9 8 7.3c1.6-.5 3.2.6 4 2.2.8-1.6 2.4-2.7 4-2.2 2 .6 3.2 3.7 3 8.3z"/><rect x="5" y="15.4" width="14" height="2.7" rx="1.2"/><circle cx="4.1" cy="16.8" r="1.7"/><circle cx="19.9" cy="16.8" r="1.7"/></svg></span>
+          <span class="exp-logo" aria-hidden="true"><img src="logos/motley-fool.png" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">Jun 2025 — Mar 2026</span>
           <span class="exp-co">The Motley Fool</span>
           <span class="exp-loc">Contract · Remote</span>
@@ -703,7 +705,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.4" stroke="currentColor" stroke-width="4.2"/><path d="M17.6 15a2.8 2.8 0 1 1-2.1 4.7z" fill="currentColor"/></svg></span>
+          <span class="exp-logo" aria-hidden="true"><img src="logos/high-fidelity.png" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">Apr 2025 — Jun 2025</span>
           <span class="exp-co">High Fidelity</span>
           <span class="exp-loc">Sr. Front End Engineer</span>
@@ -720,7 +722,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><span class="lm">pwc</span></span>
+          <span class="exp-logo" aria-hidden="true"><img src="logos/pwc.png" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">Feb 2025 — Apr 2025</span>
           <span class="exp-co">PwC</span>
           <span class="exp-loc">Full Stack Developer</span>
@@ -738,7 +740,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.15 4.1a1.2 1.2 0 0 1 1.7 0L15 10.1H9z"/><path d="M8.6 11.9h6.8l1.8 5.5H6.8z"/><rect x="5.2" y="17.4" width="13.6" height="3.1" rx="1.45"/></svg></span>
+          <span class="exp-logo" aria-hidden="true"><img class="fill" src="logos/curbside-sos.png" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">Nov 2024 — Feb 2025</span>
           <span class="exp-co">CurbsideSOS</span>
           <span class="exp-loc">Senior Software Engineer</span>
@@ -755,7 +757,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M19 8.5A8 8 0 1 0 20 12" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><path d="M12.6 2.5l3.4 1.9-3.1 1.9z" fill="currentColor"/></svg></span>
+          <span class="exp-logo" aria-hidden="true"><img src="logos/opsource.jpg" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">Feb 2022 — 2024</span>
           <span class="exp-co">OpSource</span>
           <span class="exp-loc">Senior Software Engineer</span>
@@ -772,7 +774,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><span class="lm" style="font-size:12px;letter-spacing:0">JW</span></span>
+          <span class="exp-logo" aria-hidden="true"><img class="fill" src="logos/watchtower.png" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">2018 — 2022</span>
           <span class="exp-co">Watchtower WHQ</span>
           <span class="exp-loc">Product Owner · SWE</span>
@@ -805,7 +807,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 
       <article class="exp reveal">
         <div class="exp-meta">
-          <span class="exp-logo" aria-hidden="true"><span class="lm">DS</span></span>
+          <span class="exp-logo" aria-hidden="true"><img src="logos/docsites.jpg" alt="" loading="lazy" decoding="async"></span>
           <span class="exp-date">2015 — 2017</span>
           <span class="exp-co">DocSites</span>
           <span class="exp-loc">Principal Software Developer</span>
@@ -1092,7 +1094,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   var base=document.createElement('canvas'), bx=base.getContext('2d');
   var boost=document.createElement('canvas'), bo=boost.getContext('2d');
 
-  function accent(){ var v=getComputedStyle(root).getPropertyValue('--accent').trim(); return v||'#25E3C3'; }
+  function accent(){ var v=getComputedStyle(root).getPropertyValue('--ink-faint').trim(); return v||'#5E6779'; }
 
   function renderBase(){
     bx.setTransform(dpr,0,0,dpr,0,0);
@@ -1304,6 +1306,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
       tip.classList.add('show');
     });
     grid.addEventListener('pointerleave',function(){ clearGlow(); tip.classList.remove('show') });
+    window.addEventListener('scroll',function(){ clearGlow(); tip.classList.remove('show') },{passive:true});
   }
 
   fetch(API).then(function(res){
