@@ -1529,22 +1529,22 @@ if(chatLog) new MutationObserver(function(muts){
   var dock=null, dockable=false;
   function updateDock(){ if(dock) dock.classList.toggle('show', dockable && !chatOpen) }
 
-  /* ---------- demo content (placeholder copy — replace during AI wiring) ---------- */
-  var GREETING="Hi! I'm Emmanuel's screening assistant — running in demo mode with canned answers for now.\n\nAsk me the usual screening questions, or tap a suggestion below.";
-  var FALLBACK="Demo mode: that one isn't wired up yet. Try one of the suggested questions below — or reach Emmanuel directly at emmanuel@exegia.co.";
+  /* ---------- canned answers — offline fallback when /api/chat is unreachable ---------- */
+  var GREETING="Hi! I'm Emmanuel's AI screening assistant. Ask about availability, salary, work authorization, or any of his roles — or tap a suggestion below.";
+  var FALLBACK="I couldn't reach the AI service just now. Try one of the suggested questions below — or reach Emmanuel directly at emmanuel@exegia.co.";
   var FAQ=[
     { k:['authoriz','visa','sponsor','citizen','work permit','legally'],
       q:'Are you authorized to work in the US?',
-      a:"Yes — fully authorized to work in the U.S., no sponsorship needed now or in the future. (Demo answer)" },
+      a:"Yes — Emmanuel is a U.S. citizen. No sponsorship needed, now or ever." },
     { k:['salary','compensation','comp ','rate','pay','budget'],
       q:'Salary expectations?',
-      a:"Emmanuel targets senior-level compensation for the LA/remote market and is flexible on structure (base/equity mix). Exact numbers are best discussed live once scope is clear. (Demo answer)" },
+      a:"Emmanuel targets $160k–$190k base for senior full-time roles, flexible on overall structure. The exact number depends on scope and benefits — worth a quick conversation." },
     { k:['available','availability','start','notice','when can'],
       q:'When can you start?',
-      a:"Available now — can typically start within 2 weeks of an offer. (Demo answer)" },
+      a:"Available immediately." },
     { k:['remote','onsite','on-site','hybrid','location','relocat','where'],
       q:'Remote or onsite?',
-      a:"Remote-first, based in Los Angeles (Pacific time). Open to hybrid in the LA area; not looking to relocate. (Demo answer)" },
+      a:"Remote-first, based in Los Angeles (Pacific time). Open to hybrid in the LA area; not looking to relocate." },
     { k:['stack','skills','tech','technolog','languages','tools'],
       q:'What is your core stack?',
       a:"Core: React, React Native, and TypeScript on the front; Node and Python (FastAPI/FastMCP) on the back; AWS/Azure/GCP with Docker and CI/CD.\n\nCurrent focus: AI product engineering — LLM integration, agentic workflows, and custom MCPs." },
@@ -1614,10 +1614,10 @@ if(chatLog) new MutationObserver(function(muts){
       m.textContent+=words[i++]; scrollLog(); setTimeout(step,18);
     })();
   }
-  function addSTAR(co,data,done){
+  function addSTAR(headText,data,done){
     var m=document.createElement('div'); m.className='msg ai';
     var head=document.createElement('div'); head.className='star-head';
-    head.textContent=data.role+' · '+co; m.appendChild(head);
+    head.textContent=headText; m.appendChild(head);
     [['S',data.s],['T',data.t],['A',data.a],['R',data.r]].forEach(function(p){
       var row=document.createElement('div'); row.className='star-row';
       var k=document.createElement('span'); k.className='k'; k.textContent=p[0];
@@ -1636,7 +1636,13 @@ if(chatLog) new MutationObserver(function(muts){
     });
   }
 
-  /* ---------- demo brain (replace with real AI later) ---------- */
+  /* ---------- brain: /api/chat (Claude) with canned offline fallback ---------- */
+  var API='/api/chat', history=[], aiLive=false;
+  function setLive(){
+    if(aiLive) return; aiLive=true;
+    var badge=document.querySelector('.chat-demo');
+    if(badge) badge.textContent='AI';
+  }
   function matchFAQ(text){
     var t=text.toLowerCase();
     for(var i=0;i<FAQ.length;i++)
@@ -1645,15 +1651,43 @@ if(chatLog) new MutationObserver(function(muts){
     for(var co in STAR) if(t.indexOf(co.toLowerCase())>-1) return {star:co};
     return null;
   }
+  /* AI answers role questions with labeled S.T.A.R. lines — render them as the card */
+  function parseSTAR(text){
+    var m=text.match(/Situation:\s*([\s\S]*?)\n+Task:\s*([\s\S]*?)\n+Action:\s*([\s\S]*?)\n+Result:\s*([\s\S]*)/i);
+    if(!m) return null;
+    return {head:text.slice(0,m.index).replace(/[\s:]+$/,'').trim()||'S.T.A.R.',
+            s:m[1].trim(), t:m[2].trim(), a:m[3].trim(), r:m[4].trim()};
+  }
+  function fetchAI(text){
+    history.push({role:'user',content:text});
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    var to=ctrl?setTimeout(function(){ctrl.abort()},25000):null;
+    return fetch(API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:history.slice(-16)}),
+      signal:ctrl?ctrl.signal:undefined
+    }).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json() })
+      .then(function(d){ if(to)clearTimeout(to); return (d&&typeof d.text==='string'&&d.text)?d.text:null })
+      .catch(function(){ if(to)clearTimeout(to); return null });
+  }
   function respond(text){
     busy=true; send.disabled=true; typing(true);
-    setTimeout(function(){
+    fetchAI(text).then(function(reply){
       typing(false);
-      var hit=matchFAQ(text);
       var fin=function(){ busy=false; send.disabled=false; input.focus(); drain() };
-      if(hit&&hit.star) addSTAR(hit.star,STAR[hit.star],fin);
-      else addAI(hit||FALLBACK,fin);
-    }, reduce?150:750);
+      if(reply){
+        setLive();
+        history.push({role:'assistant',content:reply});
+        var star=parseSTAR(reply);
+        if(star) addSTAR(star.head,star,fin);
+        else addAI(reply,fin);
+      }else{
+        var hit=matchFAQ(text);
+        if(hit&&hit.star) addSTAR(STAR[hit.star].role+' · '+hit.star,STAR[hit.star],fin);
+        else addAI(hit||FALLBACK,fin);
+      }
+    });
   }
   /* queue questions asked mid-response instead of dropping them */
   var queue=[];
