@@ -159,6 +159,9 @@ export default async function handler(req, res) {
         gateway: {
           user: clientIp(req),
           tags: ["feature:screening-chat"],
+          // The free poolside endpoint is occasionally flaky; fall back to
+          // another free model, then a cheap paid one as the last resort.
+          models: ["inclusionai/ling-3.0-flash-free", "google/gemini-3-flash"],
         },
       },
     });
