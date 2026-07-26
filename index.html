@@ -220,6 +220,61 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 .social:hover svg{opacity:1;color:var(--accent)}
 
 /* ============================================================
+   GITHUB GRAPH — vanilla port of unlumen/github-graph
+   ============================================================ */
+.ghgraph{margin-top:52px;
+  --ghg-cell:15px;--ghg-gap:4px;--ghg-r:3px;
+  --ghg-l0:rgba(255,255,255,.07);
+  --ghg-l1:color-mix(in srgb,var(--accent) 24%,transparent);
+  --ghg-l2:color-mix(in srgb,var(--accent) 48%,transparent);
+  --ghg-l3:color-mix(in srgb,var(--accent) 74%,transparent);
+  --ghg-l4:var(--accent)}
+:root[data-theme="light"] .ghgraph{--ghg-l0:rgba(8,20,30,.08);
+  --ghg-l1:color-mix(in srgb,var(--accent) 22%,#fff);
+  --ghg-l2:color-mix(in srgb,var(--accent) 45%,#fff);
+  --ghg-l3:color-mix(in srgb,var(--accent) 72%,#fff)}
+.ghg-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.ghg-account{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:13px;color:var(--ink);transition:color .3s var(--ease)}
+.ghg-account:hover{color:var(--accent)}
+.ghg-account svg{width:15px;height:15px;opacity:.85}
+.ghg-total{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.ghg-total b{color:var(--accent);font-weight:600}
+.ghg-scroll{overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.ghg-scroll::-webkit-scrollbar{display:none}
+.ghg-grid{display:flex;gap:var(--ghg-gap);min-width:max-content}
+.ghg-week{display:grid;grid-template-rows:repeat(7,var(--ghg-cell));gap:var(--ghg-gap)}
+.ghg-cell{position:relative;width:var(--ghg-cell);height:var(--ghg-cell);border-radius:var(--ghg-r);
+  padding:0;border:0;background:transparent;cursor:default;outline:none;
+  opacity:0;transform:scale(.35) translateY(4px);
+  transition:opacity .14s ease,transform .5s cubic-bezier(.2,.9,.25,1.05),filter .08s ease-out;
+  transition-delay:var(--ghg-delay,0s),var(--ghg-delay,0s),0s}
+.ghg-grid.on .ghg-cell{opacity:1;transform:none}
+.ghg-cell:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 4px color-mix(in srgb,var(--ink) 60%,transparent)}
+.ghg-cell i{position:absolute;inset:0;border-radius:var(--ghg-r);pointer-events:none;background:var(--ghg-l0)}
+.ghg-cell[data-level="1"] i{background:var(--ghg-l1)}
+.ghg-cell[data-level="2"] i{background:var(--ghg-l2)}
+.ghg-cell[data-level="3"] i{background:var(--ghg-l3)}
+.ghg-cell[data-level="4"] i{background:var(--ghg-l4);box-shadow:0 0 8px color-mix(in srgb,var(--accent) 45%,transparent)}
+@keyframes ghg-twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.78;transform:scale(.95)}}
+.ghg-grid.on .ghg-cell i{animation:ghg-twinkle var(--ghg-dur,2.6s) ease-in-out var(--ghg-adelay,0s) infinite}
+@keyframes ghg-pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.ghg-grid.loading .ghg-cell{opacity:1;transform:none;transition:none}
+.ghg-grid.loading .ghg-cell i{background:var(--ghg-l0);animation:ghg-pulse 1.4s ease-in-out var(--ghg-adelay,0s) infinite}
+.ghg-error{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint)}
+.ghg-tip{position:fixed;z-index:80;white-space:nowrap;pointer-events:none;
+  font-family:var(--font-mono);font-size:12px;color:var(--bg);background:var(--ink);
+  padding:6px 12px;border-radius:999px;box-shadow:0 6px 24px rgba(0,0,0,.35);
+  opacity:0;transform:translate(-50%,-100%) scale(.92);
+  transition:opacity .12s ease,transform .12s ease,left .18s var(--ease),top .18s var(--ease)}
+.ghg-tip.show{opacity:1;transform:translate(-50%,-100%) scale(1)}
+.ghg-tip.below{transform:translate(-50%,9px) scale(.92)}
+.ghg-tip.below.show{transform:translate(-50%,9px) scale(1)}
+@media (prefers-reduced-motion:reduce){
+  .ghg-cell{opacity:1;transform:none;transition:none}
+  .ghg-grid.on .ghg-cell i,.ghg-grid.loading .ghg-cell i{animation:none}}
+@media (max-width:720px){.ghgraph{--ghg-cell:12px;--ghg-gap:3px}}
+
+/* ============================================================
    STAT STRIP
    ============================================================ */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hairline);
@@ -490,7 +545,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   mask-image:linear-gradient(to right, transparent 0%, #000 30%, #000 100%);}
 .ascii-portrait canvas{position:absolute;inset:0;width:100%;height:100%}
 @media (max-width:900px){.ascii-portrait{display:none}}
-@media print{.ascii-portrait{display:none !important}}
+@media print{.ascii-portrait{display:none !important}.ghgraph{display:none !important}}
 </style>
 </head>
 <body>
@@ -569,6 +624,19 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
         Email
       </a>
+    </div>
+
+    <div class="ghgraph reveal" data-d="4" id="ghGraph">
+      <div class="ghg-head">
+        <a class="ghg-account" href="https://github.com/emmanuel-defreitas" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+          @emmanuel-defreitas
+        </a>
+        <span class="ghg-total" id="ghgTotal"></span>
+      </div>
+      <div class="ghg-scroll">
+        <div class="ghg-grid loading" id="ghgGrid" role="grid" aria-label="GitHub contributions for emmanuel-defreitas" aria-busy="true"></div>
+      </div>
     </div>
   </header>
 
@@ -1121,6 +1189,134 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
     ctx.globalAlpha=1;
     ctx.setTransform(1,0,0,1,0,0);
   }
+})();
+</script>
+
+<script>
+/* ============================================================
+   GITHUB GRAPH — vanilla port of unlumen/github-graph
+   Same data source + choreography (wave entrance, twinkle
+   ambient, hover tooltip with proximity glow), no React.
+   ============================================================ */
+(function(){
+  var ACCOUNT='emmanuel-defreitas';
+  var API='https://github-contributions-api.jogruber.de/v4/'+ACCOUNT+'?y=last';
+  var grid=document.getElementById('ghgGrid');
+  var totalEl=document.getElementById('ghgTotal');
+  if(!grid) return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var tip=document.createElement('span');
+  tip.className='ghg-tip'; tip.setAttribute('role','tooltip');
+  document.body.appendChild(tip);
+
+  /* loading skeleton */
+  (function(){
+    var f=document.createDocumentFragment();
+    for(var w=0;w<53;w++){
+      var col=document.createElement('div'); col.className='ghg-week';
+      for(var d=0;d<7;d++){
+        var c=document.createElement('span'); c.className='ghg-cell';
+        c.innerHTML='<i></i>';
+        c.style.setProperty('--ghg-adelay',((w+d)*12)+'ms');
+        col.appendChild(c);
+      }
+      f.appendChild(col);
+    }
+    grid.appendChild(f);
+  })();
+
+  function pad(n){return n<10?'0'+n:''+n}
+  function iso(d){return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate())}
+  function addDays(d,n){var r=new Date(d);r.setUTCDate(r.getUTCDate()+n);return r}
+  var fmt=new Intl.DateTimeFormat('en',{month:'short',day:'numeric'});
+  function label(c){return c.count+(c.count===1?' contribution':' contributions')+' · '+fmt.format(new Date(c.date+'T00:00:00Z'))}
+
+  /* Sunday-first calendar columns, missing dates filled at level 0 */
+  function buildWeeks(list){
+    var valid=list.filter(function(c){return /^\d{4}-\d{2}-\d{2}$/.test(c.date)&&isFinite(c.count)})
+                  .sort(function(a,b){return a.date<b.date?-1:1});
+    if(!valid.length) return [];
+    var max=0; valid.forEach(function(c){ if(c.count>max) max=c.count });
+    var byDate={}; valid.forEach(function(c){ byDate[c.date]=c });
+    var first=new Date(valid[0].date+'T00:00:00Z'), last=new Date(valid[valid.length-1].date+'T00:00:00Z');
+    var start=addDays(first,-first.getUTCDay()), end=addDays(last,6-last.getUTCDay());
+    var cells=[];
+    for(var d=start;d<=end;d=addDays(d,1)){
+      var key=iso(d), c=byDate[key];
+      var count=c?Math.max(0,c.count):0;
+      var lvl=c&&Number.isInteger(c.level)&&c.level>=0&&c.level<=4
+        ? (count===0?0:c.level)
+        : (count<=0||max<=0?0:Math.min(4,Math.max(1,Math.ceil(count/max*4))));
+      cells.push({date:key,count:count,level:lvl});
+    }
+    var weeks=[]; for(var i=0;i<cells.length;i+=7) weeks.push(cells.slice(i,i+7));
+    return weeks;
+  }
+
+  var cellRefs=[]; var lit=[];
+  function clearGlow(){ for(var i=0;i<lit.length;i++) lit[i].style.filter=''; lit=[] }
+
+  function render(weeks,total){
+    grid.textContent=''; cellRefs=[];
+    var f=document.createDocumentFragment();
+    weeks.forEach(function(week,w){
+      var col=document.createElement('div'); col.className='ghg-week'; col.setAttribute('role','row');
+      cellRefs[w]=[];
+      week.forEach(function(c,d){
+        var b=document.createElement('button');
+        b.type='button'; b.className='ghg-cell';
+        b.setAttribute('role','gridcell'); b.setAttribute('aria-label',label(c));
+        b.dataset.level=c.level; b.dataset.w=w; b.dataset.d=d;
+        var seed=((w*17+d*31)%11)/10;
+        var entrance=reduce?0:(w*0.026+d*0.016);
+        b.style.setProperty('--ghg-delay',entrance.toFixed(3)+'s');
+        var i=document.createElement('i');
+        i.style.setProperty('--ghg-dur',(2+seed*1.4).toFixed(2)+'s');
+        i.style.setProperty('--ghg-adelay',(entrance+seed*0.85).toFixed(2)+'s');
+        b.appendChild(i);
+        col.appendChild(b); cellRefs[w][d]=b;
+      });
+      f.appendChild(col);
+    });
+    grid.classList.remove('loading'); grid.removeAttribute('aria-busy');
+    grid.appendChild(f);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){grid.classList.add('on')})});
+    if(totalEl&&isFinite(total)) totalEl.innerHTML='<b>'+Number(total).toLocaleString('en-US')+'</b> contributions · last 12 months';
+
+    grid.addEventListener('pointerover',function(e){
+      var b=e.target.closest('.ghg-cell'); if(!b) return;
+      var w=+b.dataset.w, d=+b.dataset.d;
+      clearGlow();
+      for(var dw=-3;dw<=3;dw++){ var colR=cellRefs[w+dw]; if(!colR) continue;
+        for(var dd=-3;dd<=3;dd++){ var n=colR[d+dd]; if(!n) continue;
+          var s=Math.max(0,1-Math.hypot(dw,dd)/3); if(s<=0) continue;
+          n.style.filter='brightness('+(1+s*0.45).toFixed(3)+') saturate('+(1+s*0.2).toFixed(3)+')';
+          lit.push(n);
+        }
+      }
+      var r=b.getBoundingClientRect();
+      var above=r.top>56;
+      tip.textContent=b.getAttribute('aria-label');
+      tip.classList.toggle('below',!above);
+      tip.style.left=Math.min(Math.max(r.left+r.width/2,96),window.innerWidth-96)+'px';
+      tip.style.top=(above?r.top-9:r.bottom+9)+'px';
+      tip.classList.add('show');
+    });
+    grid.addEventListener('pointerleave',function(){ clearGlow(); tip.classList.remove('show') });
+  }
+
+  fetch(API).then(function(res){
+    if(!res.ok) throw new Error('GitHub account not found.');
+    return res.json();
+  }).then(function(payload){
+    if(!Array.isArray(payload.contributions)) throw new Error('No public contributions were returned.');
+    var total=payload.total&&payload.total.lastYear;
+    render(buildWeeks(payload.contributions),total);
+  }).catch(function(err){
+    grid.classList.remove('loading'); grid.removeAttribute('aria-busy');
+    grid.innerHTML='<p class="ghg-error">'+(err&&err.message?err.message:'Could not load contributions.')+'</p>';
+  });
 })();
 </script>
 
