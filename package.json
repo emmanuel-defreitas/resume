@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.115.0",
+    "ai": "^7.0.37",
     "ascii-motion-mcp": "^2.1.4",
     "cuelume": "^0.1.2"
   },

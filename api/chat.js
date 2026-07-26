@@ -3,14 +3,13 @@
  * POST /api/chat  { messages: [{role: "user"|"assistant", content: string}, ...] }
  * → { text: string }
  *
- * Calls Claude (claude-opus-5) with a cached system prompt holding Emmanuel's
- * screening facts and resume. Server-side refusal fallback is enabled
- * (fallbacks: "default") so classifier declines re-run on a fallback model.
- * Requires ANTHROPIC_API_KEY in the Vercel project environment.
+ * Calls the model through the Vercel AI Gateway (AI SDK "provider/model"
+ * string routing). Auth: VERCEL_OIDC_TOKEN automatically on Vercel
+ * deployments, or AI_GATEWAY_API_KEY as a static fallback.
  */
-import Anthropic from "@anthropic-ai/sdk";
+import { generateText, APICallError } from "ai";
 
-const MODEL = "claude-opus-5";
+const MODEL = "poolside/laguna-s-2.1-free";
 const MAX_TURNS = 16; // history entries kept per request
 const MAX_USER_CHARS = 300; // mirrors the input maxlength client-side
 const MAX_ASSISTANT_CHARS = 4000;
@@ -147,54 +146,49 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "bad_request" });
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error("ANTHROPIC_API_KEY is not set");
+  if (!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL_OIDC_TOKEN) {
+    console.error("No AI Gateway auth: neither AI_GATEWAY_API_KEY nor VERCEL_OIDC_TOKEN is set");
     return res.status(503).json({ error: "not_configured" });
   }
 
-  const client = new Anthropic();
-
   try {
-    const response = await client.beta.messages.create({
+    const result = await generateText({
       model: MODEL,
-      max_tokens: 1200, // caps thinking + text together on claude-opus-5
-      output_config: { effort: "low" },
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-      system: [
-        {
-          type: "text",
-          text: SYSTEM_PROMPT,
-          cache_control: { type: "ephemeral" },
-        },
-      ],
+      system: SYSTEM_PROMPT,
       messages,
+      maxOutputTokens: 800,
+      providerOptions: {
+        gateway: {
+          user: clientIp(req),
+          tags: ["feature:screening-chat"],
+        },
+      },
     });
 
-    if (response.stop_reason === "refusal") {
-      return res.status(200).json({
-        text: "I can't help with that one — but I'm happy to answer questions about Emmanuel's background, availability, or experience. You can also reach him directly at emmanuel@exegia.co.",
-      });
-    }
-
-    const text = response.content
-      .filter((b) => b.type === "text")
-      .map((b) => b.text)
-      .join("")
-      .trim();
-
+    const text = (result.text || "").trim();
     if (!text) return res.status(502).json({ error: "empty_response" });
     return res.status(200).json({ text });
   } catch (err) {
-    if (err instanceof Anthropic.RateLimitError) {
+    // The AI SDK may wrap the failing call in a RetryError; unwrap to the
+    // last underlying error and read whichever statusCode is present.
+    const cause = (err && err.lastError) || err;
+    const status =
+      (cause && cause.statusCode) ||
+      (APICallError.isInstance(cause) ? cause.statusCode : null);
+
+    if (status === 429) {
       return res.status(429).json({ error: "upstream_rate_limited" });
     }
-    if (err instanceof Anthropic.AuthenticationError) {
-      console.error("ANTHROPIC_API_KEY missing or invalid");
+    if (status === 402) {
+      console.error("AI Gateway budget/credits exhausted");
+      return res.status(503).json({ error: "budget_exceeded" });
+    }
+    if (status === 401 || status === 403) {
+      console.error("AI Gateway auth failed", status, cause && cause.message);
       return res.status(503).json({ error: "not_configured" });
     }
-    if (err instanceof Anthropic.APIError) {
-      console.error("Claude API error", err.status, err.message);
+    if (status) {
+      console.error("AI Gateway error", status, cause && cause.message);
       return res.status(502).json({ error: "upstream_error" });
     }
     console.error("chat handler error", err);
