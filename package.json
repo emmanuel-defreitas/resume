@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "ascii-motion-mcp": "^2.1.4"
+    "ascii-motion-mcp": "^2.1.4",
+    "cuelume": "^0.1.2"
   }
 }

@@ -141,6 +141,9 @@ li{list-style:none}
 .icon-btn svg{width:16px;height:16px}
 .theme-sun{display:none}
 :root[data-theme="light"] .theme-sun{display:block}
+#sndBtn .snd-off{display:none}
+#sndBtn.muted .snd-off{display:block}
+#sndBtn.muted .snd-on{display:none}
 :root[data-theme="light"] .theme-moon{display:none}
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]) .theme-sun{display:block}
@@ -273,6 +276,104 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   .ghg-cell{opacity:1;transform:none;transition:none}
   .ghg-grid.on .ghg-cell i,.ghg-grid.loading .ghg-cell i{animation:none}}
 @media (max-width:720px){.ghgraph{--ghg-cell:12px;--ghg-gap:3px}}
+
+/* ============================================================
+   AI SCREENING CHAT — launcher, per-role ask buttons, dialog
+   ============================================================ */
+.ai-launch{display:flex;align-items:center;gap:14px;width:100%;margin-top:34px;
+  padding:9px 9px 9px 20px;border:1px solid var(--hairline-strong);border-radius:999px;
+  background:color-mix(in srgb,var(--surface) 55%,transparent);cursor:text;text-align:left;
+  transition:border-color .35s var(--ease),background .35s var(--ease),transform .35s var(--ease)}
+.ai-launch:hover{border-color:var(--accent);background:var(--surface);transform:translateY(-2px)}
+.ai-launch .ph{flex:1;font-family:var(--font-mono);font-size:12.5px;color:var(--ink-faint);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-launch .go{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+  font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent-ink);
+  background:var(--accent);border-radius:999px;padding:9px 16px}
+.ai-launch .go svg{width:13px;height:13px}
+.exp{position:relative}
+.exp-ask{position:absolute;top:24px;right:24px;display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--font-mono);font-size:11.5px;color:var(--ink-muted);cursor:pointer;
+  padding:8px 14px;border:1px solid var(--hairline);border-radius:999px;
+  background:color-mix(in srgb,var(--surface-2) 70%,transparent);
+  transition:color .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease)}
+.exp-ask:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
+.exp-ask svg{width:13px;height:13px}
+@media (max-width:720px){.exp-ask{position:static;order:9;width:fit-content;margin-top:4px}}
+.ai-dock{position:fixed;left:50%;bottom:22px;z-index:90;margin-top:0;
+  width:min(600px,calc(100vw - 40px));
+  background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(14px);
+  box-shadow:0 18px 50px rgba(0,0,0,.35);
+  transform:translate(-50%,150%);opacity:0;pointer-events:none;
+  transition:transform .5s var(--ease),opacity .35s var(--ease),border-color .35s var(--ease)}
+.ai-dock.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.ai-dock.show:hover{transform:translate(-50%,-2px);border-color:var(--accent)}
+@media (max-width:720px){.ai-dock{display:none}}
+@media (prefers-reduced-motion:reduce){.ai-dock{transition:opacity .2s ease}}
+body.chat-lock{overflow:hidden}
+.chat-overlay{position:fixed;inset:0;z-index:210;display:grid;place-items:center;padding:20px;
+  background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(10px);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.chat-overlay.open{opacity:1;pointer-events:auto}
+.chat-overlay[hidden]{display:none}
+.chat-panel{width:min(600px,100%);height:min(680px,88dvh);display:flex;flex-direction:column;
+  background:var(--surface);border:1px solid var(--hairline-strong);border-radius:24px;overflow:hidden;
+  box-shadow:0 30px 90px rgba(0,0,0,.45);
+  transform:translateY(16px) scale(.98);opacity:0;transition:transform .35s var(--ease),opacity .35s var(--ease)}
+.chat-overlay.open .chat-panel{transform:none;opacity:1}
+@media (max-width:560px){.chat-overlay{padding:0}.chat-panel{width:100%;height:100dvh;border-radius:0;border:none}}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--hairline)}
+.chat-avatar{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;
+  background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);
+  font-family:var(--font-mono);font-size:11px;font-weight:700}
+.chat-title{flex:1;min-width:0}
+.chat-title .t{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-.01em}
+.chat-title .s{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:2px}
+.chat-title .s::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.chat-demo{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+  border:1px solid var(--hairline);border-radius:999px;padding:4px 9px;white-space:nowrap}
+.chat-close{width:32px;height:32px;border-radius:9px;border:none;display:grid;place-items:center;cursor:pointer;
+  background:var(--hairline);color:var(--ink-muted);transition:background .25s var(--ease),color .25s var(--ease)}
+.chat-close:hover{background:var(--hairline-strong);color:var(--ink)}
+.chat-close svg{width:14px;height:14px}
+.chat-log{flex:1;overflow-y:auto;padding:20px 18px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin}
+.msg{max-width:86%;padding:12px 15px;border-radius:16px;font-size:14px;line-height:1.55;
+  white-space:pre-wrap;overflow-wrap:break-word}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--bg);border-bottom-right-radius:6px}
+.msg.ai{align-self:flex-start;background:var(--surface-2);border:1px solid var(--hairline);color:var(--ink);
+  border-bottom-left-radius:6px}
+.msg.ai b{color:var(--accent);font-weight:600}
+.msg .star-row{display:grid;grid-template-columns:20px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--hairline)}
+.msg .star-row:first-of-type{border-top:none;padding-top:2px}
+.msg .star-row .k{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--accent);padding-top:2px}
+.msg .star-row .v{color:var(--ink-muted);font-size:13.5px}
+.msg .star-head{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:8px}
+.chat-typing{align-self:flex-start;display:inline-flex;gap:5px;padding:14px 16px;border-radius:16px;
+  border-bottom-left-radius:6px;background:var(--surface-2);border:1px solid var(--hairline)}
+.chat-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);animation:chat-dot 1.2s ease-in-out infinite}
+.chat-typing i:nth-child(2){animation-delay:.15s}
+.chat-typing i:nth-child(3){animation-delay:.3s}
+@keyframes chat-dot{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.chat-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px}
+.chat-chip{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-muted);cursor:pointer;
+  padding:7px 12px;border:1px solid var(--hairline);border-radius:999px;background:var(--surface-2);
+  transition:color .25s var(--ease),border-color .25s var(--ease)}
+.chat-chip:hover{color:var(--accent);border-color:var(--accent)}
+.chat-form{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--hairline)}
+.chat-input{flex:1;min-width:0;font-family:var(--font-body);font-size:14px;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--hairline);border-radius:999px;padding:11px 18px;outline:none;
+  transition:border-color .25s var(--ease)}
+.chat-input:focus{border-color:var(--accent)}
+.chat-input::placeholder{color:var(--ink-faint)}
+.chat-send{width:42px;height:42px;border-radius:50%;border:none;display:grid;place-items:center;cursor:pointer;
+  background:var(--accent);color:var(--accent-ink);flex-shrink:0;transition:transform .25s var(--ease),opacity .25s var(--ease)}
+.chat-send:hover{transform:scale(1.06)}
+.chat-send:disabled{opacity:.45;cursor:default;transform:none}
+.chat-send svg{width:16px;height:16px}
+@media (prefers-reduced-motion:reduce){
+  .chat-overlay,.chat-panel,.ai-launch,.exp-ask{transition:none}
+  .chat-typing i{animation:none}}
 
 /* ============================================================
    STAT STRIP
@@ -547,7 +648,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   mask-image:linear-gradient(to right, transparent 0%, #000 30%, #000 100%);}
 .ascii-portrait canvas{position:absolute;inset:0;width:100%;height:100%}
 @media (max-width:900px){.ascii-portrait{display:none}}
-@media print{.ascii-portrait{display:none !important}.ghgraph{display:none !important}}
+@media print{.ascii-portrait{display:none !important}.ghgraph{display:none !important}.ai-launch,.exp-ask,.chat-overlay{display:none !important}}
 </style>
 </head>
 <body>
@@ -563,17 +664,21 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   <div class="nav-pill">
     <span class="nav-brand">EDF<b>_</b></span>
     <div class="nav-links">
-      <a href="#work">work</a>
-      <a href="#skills">stack</a>
-      <a href="#projects">projects</a>
-      <a href="#education">education</a>
+      <a href="#work" data-cuelume-hover="tick">work</a>
+      <a href="#skills" data-cuelume-hover="tick">stack</a>
+      <a href="#projects" data-cuelume-hover="tick">projects</a>
+      <a href="#education" data-cuelume-hover="tick">education</a>
     </div>
     <div class="nav-tools">
-      <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle color theme">
+      <button class="icon-btn" id="sndBtn" type="button" aria-label="Toggle interaction sounds" aria-pressed="false">
+        <svg class="snd-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        <svg class="snd-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle color theme" data-cuelume-toggle>
         <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
         <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <button class="icon-btn" id="printBtn" type="button" aria-label="Download résumé (PDF or Word)">
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Download résumé (PDF or Word)" data-cuelume-press data-cuelume-release>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
       </button>
     </div>
@@ -600,11 +705,11 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
       teams from startups to the Big Four.
     </p>
     <div class="hero-actions reveal" data-d="3">
-      <a class="btn btn-primary" href="mailto:emmanuel@exegia.co">
+      <a class="btn btn-primary" href="mailto:emmanuel@exegia.co" data-cuelume-press data-cuelume-release>
         Get in touch
         <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
-      <button class="btn btn-ghost" id="printBtn2" type="button">
+      <button class="btn btn-ghost" id="printBtn2" type="button" data-cuelume-press data-cuelume-release>
         Download résumé
         <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg></span>
       </button>
@@ -640,6 +745,14 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
         <div class="ghg-grid loading" id="ghgGrid" role="grid" aria-label="GitHub contributions for emmanuel-defreitas" aria-busy="true"></div>
       </div>
     </div>
+
+    <button class="ai-launch reveal" data-d="5" id="aiLaunch" type="button" aria-haspopup="dialog" aria-controls="chatOverlay" data-cuelume-press>
+      <span class="ph">Ask my AI anything — availability, stack, work authorization, past roles…</span>
+      <span class="go">
+        Start AI screening
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </button>
   </header>
 
   <!-- STATS -->
@@ -994,11 +1107,11 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
         <h2>Have a hard interface problem?<br/>I like those.</h2>
         <p>Open to Senior Frontend, Full-Stack, and AI product engineering roles — remote or Los Angeles.</p>
         <div class="foot-actions">
-          <a class="btn btn-primary" href="mailto:emmanuel@exegia.co">
+          <a class="btn btn-primary" href="mailto:emmanuel@exegia.co" data-cuelume-press data-cuelume-release>
             emmanuel@exegia.co
             <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
-          <a class="btn btn-ghost" href="https://www.linkedin.com/in/software-engineer-manuel-defreitas/" target="_blank" rel="noopener">
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/software-engineer-manuel-defreitas/" target="_blank" rel="noopener" data-cuelume-press data-cuelume-release>
             Connect on LinkedIn
             <span class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span>
           </a>
@@ -1013,6 +1126,30 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
 </main>
 
 <!-- DOWNLOAD FORMAT PICKER -->
+<div class="chat-overlay" id="chatOverlay" role="dialog" aria-modal="true" aria-labelledby="chatTitle" hidden>
+  <div class="chat-panel">
+    <div class="chat-head">
+      <span class="chat-avatar" aria-hidden="true">EDF_</span>
+      <div class="chat-title">
+        <div class="t" id="chatTitle">Screening assistant</div>
+        <div class="s">Answers for recruiters, 24/7</div>
+      </div>
+      <span class="chat-demo">Demo</span>
+      <button class="chat-close" id="chatClose" type="button" aria-label="Close chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="chat-log" id="chatLog" aria-live="polite"></div>
+    <div class="chat-chips" id="chatChips"></div>
+    <form class="chat-form" id="chatForm">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask a screening question…" autocomplete="off" maxlength="300">
+      <button class="chat-send" id="chatSend" type="submit" aria-label="Send" data-cuelume-press data-cuelume-release>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
+
 <div class="dl-overlay" id="dlOverlay" role="dialog" aria-modal="true" aria-labelledby="dlTitle" aria-describedby="dlSub" hidden>
   <div class="dl-panel" role="document">
     <button class="dl-close" id="dlClose" type="button" aria-label="Close">
@@ -1024,7 +1161,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
       <p id="dlSub">Same content as this page, formatted for the page. Pick the format that fits where it's going.</p>
     </div>
     <div class="dl-options">
-      <button class="dl-opt" id="dlPdf" type="button">
+      <button class="dl-opt" id="dlPdf" type="button" data-cuelume-press>
         <span class="dl-ext">.pdf</span>
         <span class="dl-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
@@ -1032,7 +1169,7 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
         <span class="dl-kind">PDF</span>
         <span class="dl-desc">Typeset, print-ready layout. Opens your save dialog — choose “Save as PDF”.</span>
       </button>
-      <button class="dl-opt" id="dlDocx" type="button">
+      <button class="dl-opt" id="dlDocx" type="button" data-cuelume-press>
         <span class="dl-ext">.docx</span>
         <span class="dl-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 12.5l1.4 4.5 1.6-3.4 1.6 3.4 1.4-4.5"/></svg>
@@ -1319,6 +1456,276 @@ section{padding:clamp(128px,16vw,208px) 0 clamp(76px,9vw,116px)}
   }).catch(function(err){
     grid.classList.remove('loading'); grid.removeAttribute('aria-busy');
     grid.innerHTML='<p class="ghg-error">'+(err&&err.message?err.message:'Could not load contributions.')+'</p>';
+  });
+})();
+</script>
+
+<script type="module">
+/* ============================================================
+   CUELUME — interaction sounds (vendored ESM bundle)
+   Declarative data-cuelume-* attrs are bound once; outcome
+   cues (chat open/close, replies, downloads) are played here.
+   ============================================================ */
+import { bind, play, setEnabled } from './cuelume.js';
+bind();
+
+/* mute control — user-owned setting, persisted */
+var SND_KEY='snd-muted';
+var sndBtn=document.getElementById('sndBtn');
+var sndMuted=localStorage.getItem(SND_KEY)==='1';
+function applySnd(){
+  setEnabled(!sndMuted);
+  if(sndBtn){ sndBtn.classList.toggle('muted',sndMuted); sndBtn.setAttribute('aria-pressed',String(sndMuted)); }
+}
+applySnd();
+if(sndBtn) sndBtn.addEventListener('click',function(){
+  sndMuted=!sndMuted; localStorage.setItem(SND_KEY,sndMuted?'1':'0');
+  applySnd();
+  if(!sndMuted) play('toggle');
+});
+
+/* chat dialog: bloom on open, droplet on dismiss */
+var ov=document.getElementById('chatOverlay');
+if(ov){
+  var wasOpen=false;
+  new MutationObserver(function(){
+    var isOpen=ov.classList.contains('open');
+    if(isOpen!==wasOpen){ play(isOpen?'bloom':'droplet'); wasOpen=isOpen; }
+  }).observe(ov,{attributes:true,attributeFilter:['class']});
+}
+
+/* subtle cue when an AI reply lands */
+var chatLog=document.getElementById('chatLog');
+if(chatLog) new MutationObserver(function(muts){
+  muts.forEach(function(m){
+    m.addedNodes.forEach(function(n){
+      if(n.nodeType===1&&n.classList.contains('msg')&&n.classList.contains('ai')) play('whisper');
+    });
+  });
+}).observe(chatLog,{childList:true});
+
+/* resume download chosen */
+['dlPdf','dlDocx'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('click',function(){ play('success') });
+});
+</script>
+
+<script>
+/* ============================================================
+   AI SCREENING CHAT — demo mode
+   Canned FAQ + per-role S.T.A.R. answers. No backend yet;
+   swap respond() with a real model call when wiring AI.
+   ============================================================ */
+(function(){
+  var overlay=document.getElementById('chatOverlay');
+  if(!overlay) return;
+  var log=document.getElementById('chatLog'), chips=document.getElementById('chatChips'),
+      form=document.getElementById('chatForm'), input=document.getElementById('chatInput'),
+      send=document.getElementById('chatSend'), closeBtn=document.getElementById('chatClose'),
+      launch=document.getElementById('aiLaunch');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var lastTrigger=null, greeted=false, busy=false, chatOpen=false;
+  var dock=null, dockable=false;
+  function updateDock(){ if(dock) dock.classList.toggle('show', dockable && !chatOpen) }
+
+  /* ---------- demo content (placeholder copy — replace during AI wiring) ---------- */
+  var GREETING="Hi! I'm Emmanuel's screening assistant — running in demo mode with canned answers for now.\n\nAsk me the usual screening questions, or tap a suggestion below.";
+  var FALLBACK="Demo mode: that one isn't wired up yet. Try one of the suggested questions below — or reach Emmanuel directly at emmanuel@exegia.co.";
+  var FAQ=[
+    { k:['authoriz','visa','sponsor','citizen','work permit','legally'],
+      q:'Are you authorized to work in the US?',
+      a:"Yes — fully authorized to work in the U.S., no sponsorship needed now or in the future. (Demo answer)" },
+    { k:['salary','compensation','comp ','rate','pay','budget'],
+      q:'Salary expectations?',
+      a:"Emmanuel targets senior-level compensation for the LA/remote market and is flexible on structure (base/equity mix). Exact numbers are best discussed live once scope is clear. (Demo answer)" },
+    { k:['available','availability','start','notice','when can'],
+      q:'When can you start?',
+      a:"Available now — can typically start within 2 weeks of an offer. (Demo answer)" },
+    { k:['remote','onsite','on-site','hybrid','location','relocat','where'],
+      q:'Remote or onsite?',
+      a:"Remote-first, based in Los Angeles (Pacific time). Open to hybrid in the LA area; not looking to relocate. (Demo answer)" },
+    { k:['stack','skills','tech','technolog','languages','tools'],
+      q:'What is your core stack?',
+      a:"Core: React, React Native, and TypeScript on the front; Node and Python (FastAPI/FastMCP) on the back; AWS/Azure/GCP with Docker and CI/CD.\n\nCurrent focus: AI product engineering — LLM integration, agentic workflows, and custom MCPs." },
+    { k:['years','experience','senior','how long'],
+      q:'How many years of experience?',
+      a:"10+ years shipping web, mobile, and design systems — from startups (CurbsideSOS, High Fidelity) to enterprise (PwC), with product-owner experience leading distributed teams." },
+    { k:['contact','email','call','interview','schedule','meet','reach'],
+      q:'How do I schedule an interview?',
+      a:"Email emmanuel@exegia.co and he'll get back to you quickly — or connect on LinkedIn (link in the header above)." }
+  ];
+  var STAR={
+    'The Motley Fool':{role:'React Native Developer',
+      s:'The Fool’s official stock-management app (React Native + Expo) needed steady, safe iteration with a large active user base.',
+      t:'Own feature improvements and bug fixes end-to-end as a contract RN developer.',
+      a:'Maintained and upgraded the Expo app, shipped UX sharpening fixes, and coordinated releases with cross-functional teams.',
+      r:'Seamless app performance through every release cycle, with a steady stream of shipped improvements. (Demo copy)'},
+    'High Fidelity':{role:'Sr. Front End Engineer',
+      s:'The Quad app needed real-time audio/video features and a canvas that could draw complex objects smoothly.',
+      t:'Own the frontend as senior engineer over a focused contract.',
+      a:'Built A/V features on the Agora SDK wired up with Python, and engineered the canvas UI in Svelte + PixiJS; used Cursor AI to plan implementation and document cost/performance trade-offs.',
+      r:'Smooth complex-canvas drawing in production and a documented cost/perf strategy the team kept using. (Demo copy)'},
+    'PwC':{role:'Full Stack Developer',
+      s:'PwC ran an MVP initiative to automate audit processing and requirement validation with AI assistance.',
+      t:'Deliver features across a microfrontend React app and its .NET BFF layer.',
+      a:'Implemented feature specs, grew the internal UX design-system components, supported the C#/.NET backend-for-frontend, and ran code reviews on Azure DevOps.',
+      r:'Higher unit-test coverage and stronger CI automation for the MVP team. (Demo copy)'},
+    'CurbsideSOS':{role:'Senior Software Engineer',
+      s:'The roadside-assistance app sat at a 3.8 App Store rating with stability problems.',
+      t:'Lead a rewrite and fix the customer experience.',
+      a:'Led a React Native rewrite, cut cold-start ~45% via bundle splitting and native-module optimization, and built a live dispatch dashboard in React + D3.js for 1k+ concurrent requests.',
+      r:'Rating up from 3.8 to 4.7, crash-free sessions at 99.5%.'},
+    'OpSource':{role:'Senior Software Engineer',
+      s:'A B2B SaaS platform needed to scale reliably while the team’s delivery pipeline was slow.',
+      t:'Own platform delivery as senior engineer and raise the team’s engineering bar.',
+      a:'Delivered on AWS (Node + PostgreSQL), introduced GitLab CI/CD, established TDD and design-system practices, and mentored 4 engineers.',
+      r:'Scaled to 200k+ monthly API requests, deploys down from 30 min to 4 min, test coverage up to 85%.'},
+    'Watchtower WHQ':{role:'Product Owner · Software Engineer',
+      s:'A text-editor MVP had to support multilanguage scripts and Unicode input for a global organization.',
+      t:'Ship the frontend as SWE, then run the team as Product Owner.',
+      a:'Built the Vue.js + Electron frontend, bridged Python text-processing APIs, then led Scrum, UX strategy, and recruited/trained UX designers worldwide.',
+      r:'Shipped the MVP and left behind a trained, distributed UX team with quarterly-reported roadmaps. (Demo copy)'},
+    'DocSites':{role:'Principal Software Developer',
+      s:'Concurrent client web platforms each needed architecture, build, and launch with a small team.',
+      t:'Lead delivery end-to-end as principal developer.',
+      a:'Owned front-end delivery across projects, standardized reusable UI components, and built custom WordPress plugins and themes with marketing-platform data connectors.',
+      r:'Repeatable, component-driven delivery across every concurrent client project. (Demo copy)'}
+  };
+  var DEFAULT_CHIPS=FAQ.slice(0,5).map(function(f){return f.q});
+
+  /* ---------- rendering ---------- */
+  function scrollLog(){ log.scrollTop=log.scrollHeight }
+  function addUser(text){
+    var m=document.createElement('div'); m.className='msg user'; m.textContent=text;
+    log.appendChild(m); scrollLog();
+  }
+  function typing(on){
+    var t=log.querySelector('.chat-typing');
+    if(on&&!t){ t=document.createElement('div'); t.className='chat-typing'; t.innerHTML='<i></i><i></i><i></i>'; log.appendChild(t); scrollLog(); }
+    if(!on&&t) t.remove();
+  }
+  function addAI(text,done){
+    var m=document.createElement('div'); m.className='msg ai'; log.appendChild(m);
+    if(reduce){ m.textContent=text; scrollLog(); if(done)done(); return; }
+    var words=text.split(/(\s+)/), i=0;
+    (function step(){
+      if(i>=words.length){ if(done)done(); return; }
+      m.textContent+=words[i++]; scrollLog(); setTimeout(step,18);
+    })();
+  }
+  function addSTAR(co,data,done){
+    var m=document.createElement('div'); m.className='msg ai';
+    var head=document.createElement('div'); head.className='star-head';
+    head.textContent=data.role+' · '+co; m.appendChild(head);
+    [['S',data.s],['T',data.t],['A',data.a],['R',data.r]].forEach(function(p){
+      var row=document.createElement('div'); row.className='star-row';
+      var k=document.createElement('span'); k.className='k'; k.textContent=p[0];
+      var v=document.createElement('span'); v.className='v'; v.textContent=p[1];
+      row.appendChild(k); row.appendChild(v); m.appendChild(row);
+    });
+    log.appendChild(m); scrollLog(); if(done)done();
+  }
+  function setChips(list){
+    chips.textContent='';
+    list.forEach(function(q){
+      var b=document.createElement('button'); b.type='button'; b.className='chat-chip'; b.textContent=q;
+      b.setAttribute('data-cuelume-press',''); b.setAttribute('data-cuelume-release','');
+      b.addEventListener('click',function(){ ask(q) });
+      chips.appendChild(b);
+    });
+  }
+
+  /* ---------- demo brain (replace with real AI later) ---------- */
+  function matchFAQ(text){
+    var t=text.toLowerCase();
+    for(var i=0;i<FAQ.length;i++)
+      for(var j=0;j<FAQ[i].k.length;j++)
+        if(t.indexOf(FAQ[i].k[j])>-1) return FAQ[i].a;
+    for(var co in STAR) if(t.indexOf(co.toLowerCase())>-1) return {star:co};
+    return null;
+  }
+  function respond(text){
+    busy=true; send.disabled=true; typing(true);
+    setTimeout(function(){
+      typing(false);
+      var hit=matchFAQ(text);
+      var fin=function(){ busy=false; send.disabled=false; input.focus(); drain() };
+      if(hit&&hit.star) addSTAR(hit.star,STAR[hit.star],fin);
+      else addAI(hit||FALLBACK,fin);
+    }, reduce?150:750);
+  }
+  /* queue questions asked mid-response instead of dropping them */
+  var queue=[];
+  function drain(){ if(busy||!queue.length) return; respond(queue.shift()) }
+  function ask(text){ addUser(text); queue.push(text); drain() }
+
+  /* ---------- open / close (mirrors dl-overlay) ---------- */
+  function open(trigger){
+    lastTrigger=trigger||null;
+    overlay.hidden=false; chatOpen=true; updateDock();
+    document.body.classList.add('chat-lock');
+    requestAnimationFrame(function(){ overlay.classList.add('open') });
+    document.addEventListener('keydown',onKey,true);
+    if(!greeted){ greeted=true; setChips(DEFAULT_CHIPS); typing(true);
+      setTimeout(function(){ typing(false); addAI(GREETING) }, reduce?100:600); }
+    setTimeout(function(){ input.focus() },80);
+  }
+  function close(){
+    overlay.classList.remove('open'); chatOpen=false; updateDock();
+    document.body.classList.remove('chat-lock');
+    document.removeEventListener('keydown',onKey,true);
+    setTimeout(function(){ overlay.hidden=true },320);
+    if(lastTrigger&&lastTrigger.focus) lastTrigger.focus();
+  }
+  function onKey(e){
+    if(e.key==='Escape'){ e.preventDefault(); close(); return; }
+    if(e.key!=='Tab') return;
+    var f=overlay.querySelectorAll('button,input');
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+  overlay.addEventListener('click',function(e){ if(e.target===overlay) close() });
+  closeBtn.addEventListener('click',close);
+  if(launch) launch.addEventListener('click',function(){ open(launch) });
+
+  /* docked launcher — slides up from the bottom once the hero one scrolls past (desktop) */
+  if(launch && 'IntersectionObserver' in window && window.matchMedia('(min-width:721px)').matches){
+    dock=document.createElement('button');
+    dock.type='button'; dock.className='ai-launch ai-dock';
+    dock.setAttribute('aria-haspopup','dialog'); dock.setAttribute('aria-controls','chatOverlay');
+    dock.setAttribute('data-cuelume-press','');
+    dock.innerHTML=launch.innerHTML;
+    document.body.appendChild(dock);
+    dock.addEventListener('click',function(){ open(dock) });
+    new IntersectionObserver(function(es){
+      var e=es[0];
+      dockable=!e.isIntersecting && e.boundingClientRect.top<0;
+      updateDock();
+    },{threshold:0}).observe(launch);
+  }
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=input.value.trim();
+    if(!v) return;
+    input.value=''; ask(v);
+  });
+
+  /* ---------- per-role "ask about this" buttons ---------- */
+  document.querySelectorAll('article.exp').forEach(function(card){
+    var co=(card.querySelector('.exp-co')||{}).textContent||'';
+    if(!STAR[co]) return;
+    var b=document.createElement('button');
+    b.type='button'; b.className='exp-ask';
+    b.setAttribute('aria-haspopup','dialog');
+    b.setAttribute('data-cuelume-press','');
+    b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Ask me about this';
+    b.addEventListener('click',function(){
+      open(b);
+      setTimeout(function(){ ask('Tell me about your time at '+co+'.') }, reduce?200:900);
+    });
+    card.appendChild(b);
   });
 })();
 </script>
