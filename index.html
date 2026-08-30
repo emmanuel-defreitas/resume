@@ -504,6 +504,22 @@ body.chat-lock{overflow:hidden}
   color:var(--ink);transition:color .3s var(--ease)}
 .proj-link:hover{color:var(--accent)}
 .proj-link svg{width:14px;height:14px}
+/* README visuals framed in-card — assets are dark, frame stays dark in both themes */
+.proj-media{border:1px solid var(--hairline);border-radius:14px;overflow:hidden;
+  background:#101216;transition:border-color .5s var(--ease)}
+.proj-card:hover .proj-media{border-color:var(--hairline-strong)}
+.proj-media img{display:block;width:100%;height:auto}
+.proj-media.banner img{aspect-ratio:16/6;object-fit:cover;object-position:center 45%}
+.proj-media.term{background:#252525}
+.proj-media.term .term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;
+  background:#1B1C1F;border-bottom:1px solid rgba(255,255,255,.07)}
+.proj-media.term .term-bar i{width:11px;height:11px;border-radius:50%}
+.proj-media.term .term-bar i:nth-child(1){background:#FF5F57}
+.proj-media.term .term-bar i:nth-child(2){background:#FEBC2E}
+.proj-media.term .term-bar i:nth-child(3){background:#28C840}
+.proj-media.term .term-bar span{margin-left:8px;font-family:var(--font-mono);font-size:11px;color:#9BA3B2}
+.proj-head .ico.brand.mono{color:var(--accent)}
+.proj-head .ico.brand.mono svg{width:20px;height:20px}
 @media (max-width:560px){.proj-head{flex-wrap:wrap}.proj-status{margin-left:0;order:3}}
 
 /* ============================================================
@@ -1212,6 +1228,111 @@ body.chat-lock{overflow:hidden}
         </div>
         <div class="proj-foot">
           <a class="proj-link" href="https://github.com/exegia/corpora-py" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </article>
+
+      <article class="proj-card reveal">
+        <div class="proj-head">
+          <span class="ico brand mono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-5-6-5M12 19h8"/></svg></span>
+          <div class="proj-title">
+            <h3>Corpora CLI</h3>
+            <a class="proj-repo" href="https://github.com/exegia/homebrew-corpora" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              exegia/homebrew-corpora
+            </a>
+          </div>
+          <span class="proj-status">Live on Homebrew</span>
+        </div>
+        <p class="proj-desc">
+          The terminal front end for the Corpora toolchain — <code style="font-family:var(--font-mono)">brew install exegia/corpora/cli</code>
+          and any <b>EPUB / PDF / HTML / TEI</b> or plain-text document becomes a single portable
+          <b>.corpus</b> archive the rest of the platform can query. Ships convert, validate, schema,
+          reconcile, and library commands, with a Homebrew formula and a standalone installer built
+          and released through <b>GitHub Actions</b>.
+        </p>
+        <div class="proj-media term">
+          <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>corpora convert</span></div>
+          <img src="media/corpora-convert.gif" alt="corpora CLI converting an EPUB into a .corpus archive in the terminal" loading="lazy" decoding="async" width="1200" height="680">
+        </div>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">Homebrew</span><span class="chip">Shell</span>
+          <span class="chip">Text-Fabric</span><span class="chip">GitHub Actions</span>
+        </div>
+        <div class="proj-foot">
+          <a class="proj-link" href="https://github.com/exegia/homebrew-corpora" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </article>
+
+      <article class="proj-card reveal">
+        <div class="proj-head">
+          <span class="ico brand mono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(-60 12 12)"/></svg></span>
+          <div class="proj-title">
+            <h3>react-native-spline</h3>
+            <a class="proj-repo" href="https://github.com/emmanuel-defreitas/react-native-spline" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              emmanuel-defreitas/react-native-spline
+            </a>
+          </div>
+          <span class="proj-status">Live on npm</span>
+        </div>
+        <div class="proj-media banner">
+          <img src="media/spline-hero.png" alt="react-native-spline — a Spline 3D scene rendered natively in a React Native app" loading="lazy" decoding="async" width="1920" height="1080">
+        </div>
+        <p class="proj-desc">
+          Interactive <b>Spline</b> 3D scenes in React Native — fully native, no WebView. Wraps Spline's
+          official Swift and Android runtimes as an <b>Expo</b> native module with a zero-config plugin:
+          one <b>&lt;SplineView&gt;</b> component renders a GPU-driven scene at 60fps, while
+          <b>useSpline()</b> and <b>useVariable()</b> give JavaScript full scene control — events,
+          camera, and reactive scene variables with React ergonomics. TypeScript-first, published on npm.
+        </p>
+        <div class="chips">
+          <span class="chip">TypeScript</span><span class="chip">React Native</span><span class="chip">Expo Modules</span>
+          <span class="chip">Swift</span><span class="chip">Kotlin</span><span class="chip">npm</span>
+        </div>
+        <div class="proj-foot">
+          <a class="proj-link" href="https://github.com/emmanuel-defreitas/react-native-spline" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            View on GitHub
+          </a>
+          <a class="proj-link" href="https://www.npmjs.com/package/react-native-spline" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            View on npm
+          </a>
+        </div>
+      </article>
+
+      <article class="proj-card reveal">
+        <div class="proj-head">
+          <span class="ico brand mono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94"/></svg></span>
+          <div class="proj-title">
+            <h3>ApertureSDK</h3>
+            <a class="proj-repo" href="https://github.com/emmanuel-defreitas/ApertureSDK" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              emmanuel-defreitas/ApertureSDK
+            </a>
+          </div>
+          <span class="proj-status">Released</span>
+        </div>
+        <p class="proj-desc">
+          A modular <b>Swift</b> video-editor SDK for iOS and macOS: multi-track timeline (video, audio,
+          overlays), trim/split and drag reorder, filters and LUTs, transitions, timed text and
+          picture-in-picture overlays, SRT captions, and H.264/H.265 export with progress and cancel.
+          Split into focused <b>SwiftPM</b> modules — a Codable, AVFoundation-free timeline model at the
+          core, an <b>AVFoundation + CoreImage</b> render engine, and drop-in <b>SwiftUI</b> editor
+          components — all modern <b>async/await</b> Swift.
+        </p>
+        <div class="chips">
+          <span class="chip">Swift</span><span class="chip">SwiftUI</span><span class="chip">AVFoundation</span>
+          <span class="chip">CoreImage</span><span class="chip">SwiftPM</span>
+        </div>
+        <div class="proj-foot">
+          <a class="proj-link" href="https://github.com/emmanuel-defreitas/ApertureSDK" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
             View on GitHub
           </a>
@@ -2102,7 +2223,16 @@ if(chatLog) new MutationObserver(function(muts){
         stack:'Python · FastAPI · FastMCP · Rust · GPUI · Docker · Vercel Blob' },
       { n:'Corpora', repo:'github.com/exegia/corpora-py', u:'https://github.com/exegia/corpora-py',
         d:'Graph-based study platform for annotated religious texts (Bible, Quran, Tanakh, commentaries, lexicons). Converts **EPUB / HTML / PDF / TEI** documents into queryable graph corpora — every word, verse, and chapter a typed node — served to AI assistants via a **FastMCP** server and **FastAPI** conversion pipeline, published as uv-workspace packages on PyPI.',
-        stack:'Python · TypeScript · FastAPI · FastMCP · Docker · Shell · Supabase' }
+        stack:'Python · TypeScript · FastAPI · FastMCP · Docker · Shell · Supabase' },
+      { n:'Corpora CLI', repo:'github.com/exegia/homebrew-corpora', u:'https://github.com/exegia/homebrew-corpora',
+        d:'Terminal front end for the Corpora toolchain, installed with `brew install exegia/corpora/cli`. Converts **EPUB / PDF / HTML / TEI** and plain-text documents into single portable `.corpus` archives, with convert, validate, schema, reconcile, and library commands. Homebrew formula and standalone installer built and released via **GitHub Actions**.',
+        stack:'Python · Homebrew · Shell · Text-Fabric · GitHub Actions' },
+      { n:'react-native-spline', repo:'github.com/emmanuel-defreitas/react-native-spline', u:'https://github.com/emmanuel-defreitas/react-native-spline',
+        d:'Interactive **Spline** 3D scenes in React Native — fully native, no WebView. Wraps Spline’s official Swift and Android runtimes as an **Expo** native module with a zero-config plugin; `useSpline()` and `useVariable()` hooks give JavaScript full scene control. TypeScript-first, published on npm.',
+        stack:'TypeScript · React Native · Expo Modules · Swift · Kotlin · npm' },
+      { n:'ApertureSDK', repo:'github.com/emmanuel-defreitas/ApertureSDK', u:'https://github.com/emmanuel-defreitas/ApertureSDK',
+        d:'Modular **Swift** video-editor SDK for iOS and macOS: multi-track timeline, trim/split, filters and LUTs, transitions, timed overlays, SRT captions, and H.264/H.265 export. Focused **SwiftPM** modules — Codable timeline core, **AVFoundation + CoreImage** engine, and drop-in **SwiftUI** editor components — in modern async/await Swift.',
+        stack:'Swift · SwiftUI · AVFoundation · CoreImage · SwiftPM' }
     ],
     education:[
       { d:'Associate Degree, Computer Science', s:'Brevet de Technicien Supérieur · Development — Université Paris Nanterre, France · 2010', slang:'fr-FR' },
