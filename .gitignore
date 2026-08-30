@@ -5,3 +5,4 @@ node_modules
 _docx_preview.html
 .claude/
 .remember/
+.DS_Store
